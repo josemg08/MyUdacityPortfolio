@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<Button xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/selector_button_primary"
-    style="@style/PrimaryButtonStyle"/>
+    android:layout_height="wrap_content">
+
+    <Button
+        style="@style/PrimaryButtonStyle"
+        android:layout_width="match_parent"
+        android:id="@+id/button"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_button_primary" />
+</FrameLayout>
