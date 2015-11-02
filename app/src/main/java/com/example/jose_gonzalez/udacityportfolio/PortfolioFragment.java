@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 
 /**.___
  * Created by Jose Gonzalez, 28/10/2015
- *
- * A placeholder fragment containing a simple view.
  __.*/
 public class PortfolioFragment extends Fragment {
 

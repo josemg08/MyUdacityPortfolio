@@ -1,5 +1,7 @@
 package com.example.jose_gonzalez.udacityportfolio;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,11 +20,11 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-/**
- * .___
+import java.util.jar.Attributes;
+
+/**.___
  * Created by Jose Gonzalez, 28/10/2015
- * __.
- */
+ __.*/
 @EActivity(resName = "portfolio_activity")
 public class PortfolioActivity extends AppCompatActivity {
 
@@ -83,7 +85,10 @@ public class PortfolioActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class PortfolioButtonAdapter extends BaseAdapter{
+    /**.___
+     * Custom portfolioButtonAdapter
+     __.*/
+    private class PortfolioButtonAdapter extends BaseAdapter {
 
         private String[] items;
 
@@ -104,18 +109,33 @@ public class PortfolioActivity extends AppCompatActivity {
 
         @Override
         public View getView(final int i, View view, ViewGroup viewGroup) {
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_primary_button,null);
-            ((Button)view.findViewById(R.id.button)).setText(items[i]);
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_primary_button, null);
+            ((Button) view.findViewById(R.id.button)).setText(items[i]);
 
             final int element = i;
+
             view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(view.getContext(), " " + items[element], Toast.LENGTH_LONG).show();
+                    if (i == 0) {
+                        Intent intent;
+                        PackageManager manager = getPackageManager();
+                        try {
+                            intent = manager.getLaunchIntentForPackage("com.example.jose_gonzalez.popularmovies");
+                            if (intent == null)
+                                throw new PackageManager.NameNotFoundException();
+                            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                            startActivity(intent);
+                        } catch (PackageManager.NameNotFoundException e) {
+                            //lol
+                        }
+                    } else {
+                        Toast.makeText(view.getContext(), " " + items[element], Toast.LENGTH_LONG).show();
+                    }
                 }
             });
 
-            return view ;
+            return view;
         }
     }
 
