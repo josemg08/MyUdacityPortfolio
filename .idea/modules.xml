@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/UdacityPortfolio.iml" filepath="$PROJECT_DIR$/UdacityPortfolio.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MyUdacityPortfolio.iml" filepath="$PROJECT_DIR$/MyUdacityPortfolio.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
       <module fileurl="file://$PROJECT_DIR$/popularmovies/popularmovies.iml" filepath="$PROJECT_DIR$/popularmovies/popularmovies.iml" />
+      <module fileurl="file://$PROJECT_DIR$/portfolio/portfolio.iml" filepath="$PROJECT_DIR$/portfolio/portfolio.iml" />
     </modules>
   </component>
 </project>

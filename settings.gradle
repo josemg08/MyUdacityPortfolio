@@ -1,1 +1,1 @@
-include ':app', ':popularmovies'
+include ':portfolio', ':popularmovies', ':common'
