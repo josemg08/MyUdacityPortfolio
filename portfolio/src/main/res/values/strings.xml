@@ -1,0 +1,17 @@
+<resources>
+
+    <string name="app_name">UdacityPortfolio</string>
+    <string name="my_udacity_portfolio">My Udacity Portfolio</string>
+    <string name="my_nanodegree_apps">My Nanodegree apps</string>
+    <string name="action_settings">Settings</string>
+
+    <array name="nonodegree_apps_array">
+        <item>Spotify Streamer</item>
+        <item>Super Duo</item>
+        <item>Build it bigger</item>
+        <item>XYZ Reader</item>
+        <item>Capstone</item>
+    </array>
+
+</resources>
+    <!--.___ Created by Jose Gonzalez, 28/10/2015 __.-->
