@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**.___
+ * Created by Jose Gonzalez, 02/11/2015
+ __.*/
 public class MovieList extends AppCompatActivity {
 
     @Override

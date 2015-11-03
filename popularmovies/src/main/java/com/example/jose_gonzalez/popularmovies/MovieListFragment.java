@@ -6,9 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
+/**.___
  * A placeholder fragment containing a simple view.
- */
+ __.*/
 public class MovieListFragment extends Fragment {
 
     public MovieListFragment() {

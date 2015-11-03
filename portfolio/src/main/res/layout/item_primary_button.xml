@@ -10,4 +10,6 @@
         android:id="@+id/button"
         android:layout_height="wrap_content"
         android:background="@drawable/selector_button_primary" />
+
 </FrameLayout>
+    <!--.___ Created by Jose Gonzalez, 28/10/2015 __.-->

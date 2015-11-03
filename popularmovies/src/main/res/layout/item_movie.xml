@@ -17,4 +17,6 @@
         android:textColor="@android:color/white"
         android:textSize="22dp"
         android:layout_margin="10dp"/>
+
 </RelativeLayout>
+    <!--.___ Created by Jose Gonzalez, 02/11/2015 __.-->
