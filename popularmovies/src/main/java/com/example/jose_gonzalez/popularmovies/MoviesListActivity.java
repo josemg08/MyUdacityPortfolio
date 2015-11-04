@@ -3,7 +3,6 @@ package com.example.jose_gonzalez.popularmovies;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -31,12 +30,11 @@ public class MoviesListActivity extends AppCompatActivity {
 
     @ViewById(resName = "toolbar")
     protected Toolbar mToolbar;
-    @ViewById(resName = "movieImage")
-    protected ImageView mMovieImage;
     @ViewById(resName = "recyclerView")
     RecyclerView mRecicleView;
 
-    private static final String URL = "http://ecx.images-amazon.com/images/I/41xfBGxgdNL.jpg";
+    //TODO add different variants for every size (w185/ ...)
+    private static final String BASE_URL = "http://image.tmdb.org/t/p/w185/";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,30 +46,15 @@ public class MoviesListActivity extends AppCompatActivity {
         mToolbar.setTitle("Hola");
         setSupportActionBar(mToolbar);
 
-        //Glide sample
-        /*Glide.with(this)
-                .load(URL)
-                .into(mMovieImage);*/
-
-
         //Implementing recycle view sample
 
         // Populating our data set
-        List<ItemMovie> dataItems = new ArrayList<>();
-        dataItems.add(new ItemMovie("Indigo", "#3F51B5"));
-        dataItems.add(new ItemMovie("Pink", "#E91E63"));
-        dataItems.add(new ItemMovie("Orange", "#FF5722"));
-        dataItems.add(new ItemMovie("Green", "#4CAF50"));
-        dataItems.add(new ItemMovie("Grey", "#607D8B"));
-        dataItems.add(new ItemMovie("Cyan", "#00BCD4"));
-        dataItems.add(new ItemMovie("Amber", "#FFC107"));
-        dataItems.add(new ItemMovie("Brown", "#795548"));
-        dataItems.add(new ItemMovie("Blue", "#03A9F4"));
-        dataItems.add(new ItemMovie("Red", "#F44336"));
+        List<String> dataItems = new ArrayList<>();
+        dataItems.add(new String(BASE_URL + "/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg@"));
 
         // Creating new adapter object
-        MyAdapter myAdapter = new MyAdapter(dataItems);
-        mRecicleView.setAdapter(myAdapter);
+        MovieImageAdapter movieImageAdapter = new MovieImageAdapter(dataItems);
+        mRecicleView.setAdapter(movieImageAdapter);
 
         // Setting the layoutManager
         mRecicleView.setLayoutManager(new GridLayoutManager(this, 2));
@@ -105,17 +88,16 @@ public class MoviesListActivity extends AppCompatActivity {
     }
 
     /**.___
-     * Custom recicle view adapter
+     * Custom recycle view adapter
     __.*/
 
-    public class MyAdapter extends RecyclerView.Adapter {
+    public class MovieImageAdapter extends RecyclerView.Adapter {
 
-        private List<ItemMovie> dataItems;
+        private List<String> urls;
 
         // Adapter constructor
-        public MyAdapter(List<ItemMovie> dataItems) {
-
-            this.dataItems = dataItems;
+        public MovieImageAdapter(List<String> urls) {
+            this.urls = urls;
         }
 
         @Override
@@ -130,30 +112,29 @@ public class MoviesListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
 
-            ItemMovie dataItem = dataItems.get(position);
+            String dataItem = urls.get(position);
             // Casting the viewHolder to MyViewHolder so I could interact with the views
             MyViewHolder myViewHolder = (MyViewHolder) viewHolder;
-            myViewHolder.colorBlock.setBackgroundColor(dataItem.getColor());
-            myViewHolder.colorName.setText(dataItem.getName());
+
+            //.___ Glide sample __./
+            Glide.with(getApplicationContext())
+                .load(urls.get(position))
+                .into(myViewHolder.imageView);
         }
 
         @Override
         public int getItemCount() {
-
-            return dataItems.size();
+            return urls.size();
         }
 
         /** This is our ViewHolder class */
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            public TextView colorName;
-            public View colorBlock;
+            public ImageView imageView;
 
             public MyViewHolder(View itemView) {
                 super(itemView); // Must call super() first
-                colorName = (TextView) itemView.findViewById(R.id.colorName);
-                colorBlock = (View) itemView.findViewById(R.id.colorBlock);
-
+                imageView = (ImageView) itemView.findViewById(R.id.movieBlock);
             }
         }
     }
