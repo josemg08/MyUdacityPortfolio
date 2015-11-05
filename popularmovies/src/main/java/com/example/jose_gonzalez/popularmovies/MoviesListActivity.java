@@ -1,5 +1,6 @@
 package com.example.jose_gonzalez.popularmovies;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,30 +12,35 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**.___
+/**
+ * .___
  * Created by jose-gonzalez on 02/11/15.
- __.*/
+ * __.
+ */
 @EActivity(resName = "movies_list_activity")
 public class MoviesListActivity extends AppCompatActivity {
+
+    @Bean
+    protected PopularMoviesDataSource mDataSource;
 
     @ViewById(resName = "toolbar")
     protected Toolbar mToolbar;
     @ViewById(resName = "recyclerView")
-    RecyclerView mRecicleView;
+    protected RecyclerView mRecicleView;
 
     //TODO add different variants for every size (w185/ ...)
-    private static final String BASE_URL = "http://image.tmdb.org/t/p/w185/";
+    private static final String API_KEY = "48b95a671f15deb4851700a9a10b42c8";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +56,7 @@ public class MoviesListActivity extends AppCompatActivity {
 
         // Populating our data set
         List<String> dataItems = new ArrayList<>();
-        dataItems.add(new String(BASE_URL + "/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg@"));
+        //dataItems.add(new String(BASE_URL + "/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg@"));
 
         // Creating new adapter object
         MovieImageAdapter movieImageAdapter = new MovieImageAdapter(dataItems);
@@ -58,6 +64,16 @@ public class MoviesListActivity extends AppCompatActivity {
 
         // Setting the layoutManager
         mRecicleView.setLayoutManager(new GridLayoutManager(this, 2));
+
+        AsyncTask asyncTask = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                mDataSource.getPopularMovies();
+                return null;
+            }
+        };
+        asyncTask.execute();
+
     }
 
     @Override
@@ -89,7 +105,7 @@ public class MoviesListActivity extends AppCompatActivity {
 
     /**.___
      * Custom recycle view adapter
-    __.*/
+     __.*/
 
     public class MovieImageAdapter extends RecyclerView.Adapter {
 
@@ -118,8 +134,8 @@ public class MoviesListActivity extends AppCompatActivity {
 
             //.___ Glide sample __./
             Glide.with(getApplicationContext())
-                .load(urls.get(position))
-                .into(myViewHolder.imageView);
+                    .load(urls.get(position))
+                    .into(myViewHolder.imageView);
         }
 
         @Override
@@ -127,7 +143,9 @@ public class MoviesListActivity extends AppCompatActivity {
             return urls.size();
         }
 
-        /** This is our ViewHolder class */
+        /**
+         * This is our ViewHolder class
+         */
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
             public ImageView imageView;

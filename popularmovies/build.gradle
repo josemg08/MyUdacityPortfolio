@@ -17,6 +17,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+    }
 }
 
 //.___ Android annotations __./
@@ -45,6 +50,9 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.6.1'
     apt "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
+    compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
+    compile 'com.google.code.gson:gson:2.3'
+    compile 'org.parceler:parceler-api:0.2.7'
 
     //.___ Library projects __./
     compile project(':common')
