@@ -39,12 +39,38 @@ public class MoviesListActivity extends AppCompatActivity {
     @ViewById(resName = "recyclerView")
     protected RecyclerView mRecicleView;
 
-    //TODO add different variants for every size (w185/ ...)
-    private static final String API_KEY = "48b95a671f15deb4851700a9a10b42c8";
+    private MovieDto mMovieDto;
+    private List<String> dataItems;
+    private MovieImageAdapter movieImageAdapter;
+
+    private static final String DEVICE_SIZE = "w92/",
+                                DEVICE_SIZE1 = "w154/",
+                                DEVICE_SIZE2 = "w185/",
+                                DEVICE_SIZE3 = "w342/",
+                                DEVICE_SIZE4 = "w500/",
+                                DEVICE_SIZE5 = "w780/";
+    private static final String BASE_URL = "http://image.tmdb.org/t/p/";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //.___ Async task bring info from API __./
+        AsyncTask asyncTask = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                mMovieDto = mDataSource.getPopularMovies();
+                onPostExecute();
+                return null;
+            }
+
+            //Update list ui after process finished.
+            protected void onPostExecute() {
+                fillList();
+            }
+        };
+        asyncTask.execute();
+
     }
 
     @AfterViews
@@ -52,28 +78,24 @@ public class MoviesListActivity extends AppCompatActivity {
         mToolbar.setTitle("Hola");
         setSupportActionBar(mToolbar);
 
-        //Implementing recycle view sample
-
-        // Populating our data set
-        List<String> dataItems = new ArrayList<>();
-        //dataItems.add(new String(BASE_URL + "/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg@"));
-
-        // Creating new adapter object
-        MovieImageAdapter movieImageAdapter = new MovieImageAdapter(dataItems);
-        mRecicleView.setAdapter(movieImageAdapter);
-
-        // Setting the layoutManager
+        //.___ Setting the layoutManager __./
         mRecicleView.setLayoutManager(new GridLayoutManager(this, 2));
 
-        AsyncTask asyncTask = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                mDataSource.getPopularMovies();
-                return null;
-            }
-        };
-        asyncTask.execute();
+        dataItems = new ArrayList<>();
+        movieImageAdapter = new MovieImageAdapter(dataItems);
+        mRecicleView.setAdapter(movieImageAdapter);
+    }
 
+    //.___ To be called after the asyncTask finishes __./
+    private void fillList(){
+        //.___ Populating our data set __./
+        for (MoviePosterDto moviePosterDto : mMovieDto.getMovies()) {
+            dataItems.add(BASE_URL + DEVICE_SIZE3 + moviePosterDto.getPosterUrl());
+        }
+
+        // Creating new adapter object
+        movieImageAdapter = new MovieImageAdapter(dataItems);
+        mRecicleView.setAdapter(movieImageAdapter);
     }
 
     @Override
@@ -103,9 +125,11 @@ public class MoviesListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**.___
+    /**
+     * .___
      * Custom recycle view adapter
-     __.*/
+     * __.
+     */
 
     public class MovieImageAdapter extends RecyclerView.Adapter {
 

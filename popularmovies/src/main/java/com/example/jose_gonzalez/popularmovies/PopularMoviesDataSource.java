@@ -11,7 +11,7 @@ public class PopularMoviesDataSource {
     @RestService
     PopularMoviesClient mApiClient;
 
-    public String getPopularMovies() {
+    public MovieDto getPopularMovies() {
         return mApiClient.getMoviePoster();
     }
 

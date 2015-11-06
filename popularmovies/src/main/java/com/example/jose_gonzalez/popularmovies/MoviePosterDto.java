@@ -11,15 +11,12 @@ import org.parceler.Parcel;
  */
 @Parcel
 public class MoviePosterDto implements Serializable { //.___ stands for Data transfer object .__/
-    @SerializedName("posrter_url")
+
+    @SerializedName("poster_path")
     protected String posterUrl;
 
     public String getPosterUrl() {
         return posterUrl;
-    }
-
-    public void setPosterUrl(String posterUrl) {
-        this.posterUrl = posterUrl;
     }
 
 }
