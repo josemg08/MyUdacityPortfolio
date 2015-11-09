@@ -1,6 +1,5 @@
 package com.example.jose_gonzalez.popularmovies;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -22,13 +21,12 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**.___
  * Created by jose-gonzalez on 02/11/15.
  __.*/
 @EActivity(resName = "movies_list_activity")
-public class MoviesListActivity extends AppCompatActivity {
+public class MoviesListActivity extends AppCompatActivity implements PopularMoviesDataSource.AsyncHost{
 
     @Bean
     protected PopularMoviesDataSource mDataSource;
@@ -38,7 +36,6 @@ public class MoviesListActivity extends AppCompatActivity {
     @ViewById(resName = "recyclerView")
     protected RecyclerView mRecicleView;
 
-    private MovieDto mMovieDto;
     private List<String> dataItems;
     private MovieImageAdapter movieImageAdapter;
 
@@ -50,32 +47,20 @@ public class MoviesListActivity extends AppCompatActivity {
                                 DEVICE_SIZE5 = "w780/";
     private static final String BASE_URL = "http://image.tmdb.org/t/p/";
 
-    public static final String KEY = "Add your key here!";
+    public static final String KEY = "Add your key!";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //.___ Async task bring info from API __./
-        new AsyncTask(){
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                mMovieDto = mDataSource.getPopularMovies();
-                return null;
-            }
-
-            //Update list ui after process finished.
-            @Override
-            protected void onPostExecute(Object result) {
-                fillList();
-            }
-        }.execute();
+        mDataSource.getPopularMovies(this);
 
     }
 
     @AfterViews
     protected void init() {
-            mToolbar.setTitle(getString(R.string.app_name));
+        mToolbar.setTitle(getString(R.string.app_name));
         setSupportActionBar(mToolbar);
 
         //.___ Setting the layoutManager __./
@@ -86,16 +71,18 @@ public class MoviesListActivity extends AppCompatActivity {
         mRecicleView.setAdapter(movieImageAdapter);
     }
 
-    //.___ To be called after the asyncTask finishes __./
-    private void fillList(){
+    //.___ Callback from dataSource, To be called after the asyncTask finishes __./
+    @Override
+    public void asyncUIExecute(MovieDto movieDto) {
         //.___ Populating our data set __./
-        for (MoviePosterDto moviePosterDto : mMovieDto.getMovies()) {
+        dataItems.clear();
+        for (MoviePosterDto moviePosterDto : movieDto.getMovies()) {
             dataItems.add(BASE_URL + DEVICE_SIZE3 + moviePosterDto.getPosterUrl());
         }
 
-        // Creating new adapter object
         movieImageAdapter = new MovieImageAdapter(dataItems);
         mRecicleView.setAdapter(movieImageAdapter);
+        mRecicleView.getAdapter().notifyDataSetChanged();
     }
 
     @Override
@@ -117,9 +104,16 @@ public class MoviesListActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.sort_by_popularity_id:
+                mDataSource.getPopularMovies(this);
+                return true;
+            case R.id.sort_by_votes_id:
+                mDataSource.getMostVotedMovies(this);
+                return true;
+            case R.id.sort_by_release_id:
+                mDataSource.getLatestReleasedMovies(this);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

@@ -1,5 +1,7 @@
 package com.example.jose_gonzalez.popularmovies;
 
+import android.os.AsyncTask;
+
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.rest.RestService;
 
@@ -11,8 +13,64 @@ public class PopularMoviesDataSource {
     @RestService
     PopularMoviesClient mApiClient;
 
-    public MovieDto getPopularMovies() {
-        return mApiClient.getMoviePoster();
+    public interface AsyncHost{
+
+        void asyncUIExecute(MovieDto movieDto);
+
+    }
+
+    public void getPopularMovies(final AsyncHost asyncHost) {
+
+        //.___ Async task bring info from API __./
+        new AsyncTask<MovieDto, MovieDto, MovieDto>() {
+            @Override
+            protected MovieDto doInBackground(MovieDto... movieDtos) {
+                return mApiClient.getMoviePosterByPopularity();
+            }
+
+            //.___ Update list ui after process finished __./
+            @Override
+            protected void onPostExecute(MovieDto result) {
+                asyncHost.asyncUIExecute(result);
+            }
+        }.execute();
+
+    }
+
+    public void getMostVotedMovies(final AsyncHost asyncHost) {
+
+        //.___ Async task bring info from API __./
+        new AsyncTask<MovieDto, MovieDto, MovieDto>() {
+            @Override
+            protected MovieDto doInBackground(MovieDto... movieDtos) {
+                return mApiClient.getMoviePosterByMostVotes();
+            }
+
+            //.___ Update list ui after process finished __./
+            @Override
+            protected void onPostExecute(MovieDto result) {
+                asyncHost.asyncUIExecute(result);
+            }
+        }.execute();
+
+    }
+
+    public void getLatestReleasedMovies(final AsyncHost asyncHost) {
+
+        //.___ Async task bring info from API __./
+        new AsyncTask<MovieDto, MovieDto, MovieDto>() {
+            @Override
+            protected MovieDto doInBackground(MovieDto... movieDtos) {
+                return mApiClient.getMoviePosterByReleaseDate();
+            }
+
+            //.___ Update list ui after process finished __./
+            @Override
+            protected void onPostExecute(MovieDto result) {
+                asyncHost.asyncUIExecute(result);
+            }
+        }.execute();
+
     }
 
 }

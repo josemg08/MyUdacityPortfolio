@@ -16,11 +16,20 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 @Rest(rootUrl = "http://api.themoviedb.org/3",
         converters = {
         GsonHttpMessageConverter.class,
-        StringHttpMessageConverter.class//TODO Converters for json
+        StringHttpMessageConverter.class
 })
 public interface PopularMoviesClient {
 
+    //.___ Get movie list order by most popular decedent __./
     @Get("/discover/movie?sort_by=popularity.desc&api_key=" + MoviesListActivity.KEY)
-    MovieDto getMoviePoster(); //TODO change to moviePosterDto, check API to know the "$#&/ works
+    MovieDto getMoviePosterByPopularity();
+
+    //.___ Get movie list order by most voted decedent __./
+    @Get("/discover/movie?sort_by=vote_average.desc&api_key=" + MoviesListActivity.KEY)
+    MovieDto getMoviePosterByMostVotes();
+
+    //.___ Get movie list order by release date decedent __./
+    @Get("/discover/movie?sort_by=release_date.desc&api_key=" + MoviesListActivity.KEY)
+    MovieDto getMoviePosterByReleaseDate();
 
 }

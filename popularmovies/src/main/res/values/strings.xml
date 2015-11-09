@@ -1,7 +1,9 @@
 <resources>
 
     <string name="app_name">PopularMovies</string>
-    <string name="action_settings">Settings</string>
+    <string name="sort_by_popularity">Sort by popularity</string>
+    <string name="sort_by_votes">Sort by votes</string>
+    <string name="sort_by_release">Sort by release date</string>
 
 </resources>
     <!--.___ Created by Jose Gonzalez, 02/11/2015 __.-->
