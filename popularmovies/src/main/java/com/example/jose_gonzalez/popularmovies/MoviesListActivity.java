@@ -22,12 +22,11 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-/**
- * .___
+/**.___
  * Created by jose-gonzalez on 02/11/15.
- * __.
- */
+ __.*/
 @EActivity(resName = "movies_list_activity")
 public class MoviesListActivity extends AppCompatActivity {
 
@@ -51,31 +50,32 @@ public class MoviesListActivity extends AppCompatActivity {
                                 DEVICE_SIZE5 = "w780/";
     private static final String BASE_URL = "http://image.tmdb.org/t/p/";
 
+    public static final String KEY = "Add your key here!";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //.___ Async task bring info from API __./
-        AsyncTask asyncTask = new AsyncTask() {
+        new AsyncTask(){
             @Override
             protected Object doInBackground(Object[] objects) {
                 mMovieDto = mDataSource.getPopularMovies();
-                onPostExecute();
                 return null;
             }
 
             //Update list ui after process finished.
-            protected void onPostExecute() {
+            @Override
+            protected void onPostExecute(Object result) {
                 fillList();
             }
-        };
-        asyncTask.execute();
+        }.execute();
 
     }
 
     @AfterViews
     protected void init() {
-        mToolbar.setTitle("Hola");
+            mToolbar.setTitle(getString(R.string.app_name));
         setSupportActionBar(mToolbar);
 
         //.___ Setting the layoutManager __./
@@ -125,11 +125,9 @@ public class MoviesListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * .___
+    /**.___
      * Custom recycle view adapter
-     * __.
-     */
+     __.*/
 
     public class MovieImageAdapter extends RecyclerView.Adapter {
 
@@ -156,7 +154,7 @@ public class MoviesListActivity extends AppCompatActivity {
             // Casting the viewHolder to MyViewHolder so I could interact with the views
             MyViewHolder myViewHolder = (MyViewHolder) viewHolder;
 
-            //.___ Glide sample __./
+            //.___ Glide image load __./
             Glide.with(getApplicationContext())
                     .load(urls.get(position))
                     .into(myViewHolder.imageView);

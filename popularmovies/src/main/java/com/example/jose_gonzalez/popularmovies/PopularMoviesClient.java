@@ -20,9 +20,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 })
 public interface PopularMoviesClient {
 
-    String KEY = "Cant share this key add yours";
-
-    @Get("/discover/movie?sort_by=popularity.desc&api_key=" + KEY)
+    @Get("/discover/movie?sort_by=popularity.desc&api_key=" + MoviesListActivity.KEY)
     MovieDto getMoviePoster(); //TODO change to moviePosterDto, check API to know the "$#&/ works
 
 }
