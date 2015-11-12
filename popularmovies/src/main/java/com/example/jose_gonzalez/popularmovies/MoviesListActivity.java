@@ -1,5 +1,6 @@
 package com.example.jose_gonzalez.popularmovies;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,6 +18,7 @@ import com.bumptech.glide.Glide;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.FragmentByTag;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
@@ -26,10 +28,13 @@ import java.util.List;
  * Created by jose-gonzalez on 02/11/15.
  __.*/
 @EActivity(resName = "movies_list_activity")
-public class MoviesListActivity extends AppCompatActivity implements PopularMoviesDataSource.AsyncHost{
+public class MoviesListActivity extends AppCompatActivity implements PopularMoviesDataSource.AsyncHost, MovieImageAdapter.RecicleCallback{
 
     @Bean
     protected PopularMoviesDataSource mDataSource;
+
+    @FragmentByTag("portfolio_fragment")
+    Fragment ffragment;
 
     @ViewById(resName = "toolbar")
     protected Toolbar mToolbar;
@@ -47,7 +52,7 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
                                 DEVICE_SIZE5 = "w780/";
     private static final String BASE_URL = "http://image.tmdb.org/t/p/";
 
-    public static final String KEY = "Add your key!";
+    public static final String KEY = "48b95a671f15deb4851700a9a10b42c8";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +60,6 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
 
         //.___ Async task bring info from API __./
         mDataSource.getPopularMovies(this);
-
     }
 
     @AfterViews
@@ -67,7 +71,7 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
         mRecicleView.setLayoutManager(new GridLayoutManager(this, 2));
 
         dataItems = new ArrayList<>();
-        movieImageAdapter = new MovieImageAdapter(dataItems);
+        movieImageAdapter = new MovieImageAdapter(getApplicationContext(), dataItems, this);
         mRecicleView.setAdapter(movieImageAdapter);
     }
 
@@ -80,7 +84,7 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
             dataItems.add(BASE_URL + DEVICE_SIZE3 + moviePosterDto.getPosterUrl());
         }
 
-        movieImageAdapter = new MovieImageAdapter(dataItems);
+        movieImageAdapter = new MovieImageAdapter(getApplicationContext(), dataItems, this);
         mRecicleView.setAdapter(movieImageAdapter);
         mRecicleView.getAdapter().notifyDataSetChanged();
     }
@@ -119,58 +123,14 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
         return super.onOptionsItemSelected(item);
     }
 
-    /**.___
-     * Custom recycle view adapter
-     __.*/
+    @Override
+    public void itemSelected(int elementPosition) {
+        MovieDetailFragment fragment = new MovieDetailFragment();
+        //fragment.setArguments(arguments);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.movieListFragment, fragment)
+                .commit();
 
-    public class MovieImageAdapter extends RecyclerView.Adapter {
-
-        private List<String> urls;
-
-        // Adapter constructor
-        public MovieImageAdapter(List<String> urls) {
-            this.urls = urls;
-        }
-
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-
-            View layoutView = LayoutInflater
-                    .from(viewGroup.getContext())
-                    .inflate(R.layout.item_movie, null);
-            return new MyViewHolder(layoutView);
-        }
-
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-
-            String dataItem = urls.get(position);
-            // Casting the viewHolder to MyViewHolder so I could interact with the views
-            MyViewHolder myViewHolder = (MyViewHolder) viewHolder;
-
-            //.___ Glide image load __./
-            Glide.with(getApplicationContext())
-                    .load(urls.get(position))
-                    .into(myViewHolder.imageView);
-        }
-
-        @Override
-        public int getItemCount() {
-            return urls.size();
-        }
-
-        /**
-         * This is our ViewHolder class
-         */
-        public class MyViewHolder extends RecyclerView.ViewHolder {
-
-            public ImageView imageView;
-
-            public MyViewHolder(View itemView) {
-                super(itemView); // Must call super() first
-                imageView = (ImageView) itemView.findViewById(R.id.movieBlock);
-            }
-        }
     }
 
 }

@@ -2,10 +2,8 @@ package com.example.jose_gonzalez.popularmovies;
 
 import org.androidannotations.annotations.rest.Get;
 import org.androidannotations.annotations.rest.Rest;
-import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
 /**.___
  * Created by jose-gonzalez on 04/11/15.
@@ -28,8 +26,8 @@ public interface PopularMoviesClient {
     @Get("/discover/movie?sort_by=vote_average.desc&api_key=" + MoviesListActivity.KEY)
     MovieDto getMoviePosterByMostVotes();
 
-    //.___ Get movie list order by release date decedent __./
-    @Get("/discover/movie?sort_by=release_date.desc&api_key=" + MoviesListActivity.KEY)
+    //.___ Get movie list order by release date ascendant __./
+    @Get("/discover/movie?sort_by=release_date.asc&api_key=" + MoviesListActivity.KEY)
     MovieDto getMoviePosterByReleaseDate();
 
 }
