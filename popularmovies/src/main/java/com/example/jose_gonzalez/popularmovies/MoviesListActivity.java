@@ -1,24 +1,16 @@
 package com.example.jose_gonzalez.popularmovies;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.FragmentByTag;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
@@ -41,14 +33,11 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
     private List<String> dataItems;
     private MovieImageAdapter movieImageAdapter;
 
-    private static final String DEVICE_SIZE = "w92/",
-                                DEVICE_SIZE1 = "w154/",
-                                DEVICE_SIZE2 = "w185/",
-                                DEVICE_SIZE3 = "w342/",
-                                DEVICE_SIZE4 = "w500/",
-                                DEVICE_SIZE5 = "w780/";
+    //.___ Available sizes: w92/, w154/, w185/, w342/, w500/, w780/ __./
+    private static final String DEVICE_SIZE3 = "w342/";
     private static final String BASE_URL = "http://image.tmdb.org/t/p/";
 
+    //.___ KEY that grants permission to interact whit API __./
     public static final String KEY = "48b95a671f15deb4851700a9a10b42c8";
 
     @Override
@@ -72,6 +61,11 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
         mRecicleView.setAdapter(movieImageAdapter);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     //.___ Callback from dataSource, To be called after the asyncTask finishes __./
     @Override
     public void asyncUIExecute(MovieDto movieDto) {
@@ -86,23 +80,28 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
         mRecicleView.getAdapter().notifyDataSetChanged();
     }
 
+    //.___ Callback from RecycleView, To respond to item selection __./
     @Override
-    protected void onResume() {
-        super.onResume();
+    public void itemSelected(int elementPosition) {
+        MovieDetailFragment fragment = new MovieDetailFragment();
+        //fragment.setArguments(arguments);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.portfolio_fragment, fragment)
+                .addToBackStack("tag")
+                .commit();
+
     }
+
+    //.___ Action bar menu __./
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_movie_list, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         switch (id){
@@ -118,17 +117,6 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void itemSelected(int elementPosition) {
-        MovieDetailFragment fragment = new MovieDetailFragment();
-        //fragment.setArguments(arguments);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.portfolio_fragment, fragment)
-                .addToBackStack("tag")
-                .commit();
-
     }
 
 }

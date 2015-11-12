@@ -1,9 +1,5 @@
 package com.example.jose_gonzalez.popularmovies;
 
-/**
- * Created by jose-gonzalez on 11/11/15.
- */
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,7 +12,11 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 /**.___
+ *
+ * Created by jose-gonzalez on 11/11/15.
+ *
  * Custom recycle view adapter
+ *
  __.*/
 public class MovieImageAdapter extends RecyclerView.Adapter{
 
@@ -38,17 +38,15 @@ public class MovieImageAdapter extends RecyclerView.Adapter{
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-
         View layoutView = LayoutInflater
                 .from(viewGroup.getContext())
-                .inflate(R.layout.item_movie, null);
+                .inflate(R.layout.item_movie, viewGroup, false);
         return new MyViewHolder(layoutView);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-
-        String dataItem = urls.get(position);
+        //String dataItem = urls.get(position);
         // Casting the viewHolder to MyViewHolder so I could interact with the views
         MyViewHolder myViewHolder = (MyViewHolder) viewHolder;
 
@@ -63,9 +61,9 @@ public class MovieImageAdapter extends RecyclerView.Adapter{
         return urls.size();
     }
 
-    /**
+    /**.___
      * ViewHolder class
-     */
+     __.*/
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public ImageView imageView;
