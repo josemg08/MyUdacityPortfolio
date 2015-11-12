@@ -33,9 +33,6 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
     @Bean
     protected PopularMoviesDataSource mDataSource;
 
-    @FragmentByTag("portfolio_fragment")
-    Fragment ffragment;
-
     @ViewById(resName = "toolbar")
     protected Toolbar mToolbar;
     @ViewById(resName = "recyclerView")
@@ -128,7 +125,8 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
         MovieDetailFragment fragment = new MovieDetailFragment();
         //fragment.setArguments(arguments);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.movieListFragment, fragment)
+                .replace(R.id.portfolio_fragment, fragment)
+                .addToBackStack("tag")
                 .commit();
 
     }
