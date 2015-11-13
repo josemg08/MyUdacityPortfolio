@@ -32,13 +32,14 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
 
     private List<String> dataItems;
     private MovieImageAdapter movieImageAdapter;
+    private List<MoviePosterDto> movieList;
 
     //.___ Available sizes: w92/, w154/, w185/, w342/, w500/, w780/ __./
     private static final String DEVICE_SIZE3 = "w342/";
     private static final String BASE_URL = "http://image.tmdb.org/t/p/";
 
     //.___ KEY that grants permission to interact whit API __./
-    public static final String KEY = "48b95a671f15deb4851700a9a10b42c8";
+    public static final String KEY = "Add your key here!";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,8 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
     public void asyncUIExecute(MovieDto movieDto) {
         //.___ Populating our data set __./
         dataItems.clear();
-        for (MoviePosterDto moviePosterDto : movieDto.getMovies()) {
+        movieList = movieDto.getMovies();
+        for (MoviePosterDto moviePosterDto : movieList) {
             dataItems.add(BASE_URL + DEVICE_SIZE3 + moviePosterDto.getPosterUrl());
         }
 
@@ -83,13 +85,13 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
     //.___ Callback from RecycleView, To respond to item selection __./
     @Override
     public void itemSelected(int elementPosition) {
-        MovieDetailFragment fragment = new MovieDetailFragment();
-        //fragment.setArguments(arguments);
+        //MovieDetailFragment fragment = MovieDetailFragment_.builder().mMoviePosterDto(movieList.get(elementPosition)); //TODO send DTO as fragmentarg
+        MovieDetailFragment fragment = MovieDetailFragment_.builder().build();
+        fragment.setMoviePosterDto(movieList.get(elementPosition));
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.portfolio_fragment, fragment)
                 .addToBackStack("tag")
                 .commit();
-
     }
 
     //.___ Action bar menu __./
