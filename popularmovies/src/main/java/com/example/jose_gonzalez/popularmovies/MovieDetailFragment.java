@@ -5,7 +5,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -23,6 +26,8 @@ public class MovieDetailFragment extends Fragment {
 
     @ViewById(resName = "title")
     protected TextView mTitle;
+    @ViewById(resName = "movie_image")
+    protected ImageView mMovieImage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,6 +38,11 @@ public class MovieDetailFragment extends Fragment {
     @AfterViews
     public void init(){
         mTitle.setText(mMoviePosterDto.getTitle());
+
+        //.___ Glide image load __./
+        Glide.with(getContext())
+                .load(mMoviePosterDto.posterUrl)
+                .into(mMovieImage);
     }
 
     public void setMoviePosterDto(MoviePosterDto moviePosterDto){

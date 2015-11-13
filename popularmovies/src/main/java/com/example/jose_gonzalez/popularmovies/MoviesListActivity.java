@@ -39,7 +39,7 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
     private static final String BASE_URL = "http://image.tmdb.org/t/p/";
 
     //.___ KEY that grants permission to interact whit API __./
-    public static final String KEY = "Add your key here!";
+    public static final String KEY = "Add your key!";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
