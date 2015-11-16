@@ -7,9 +7,10 @@
     <ImageView
         android:id="@+id/movieBlock"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size_270dp"
+        android:layout_height="@dimen/movie_poster_size"
         android:background="@color/colorPrimaryLight"
-        android:src="@android:drawable/sym_def_app_icon"/>
+        android:src="@android:drawable/sym_def_app_icon"
+        android:contentDescription="@string/poster_image"/>
 
 </FrameLayout>
     <!--.___ Created by Jose Gonzalez, 02/11/2015 __.-->

@@ -15,5 +15,39 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!--.___ Detail view themes __.-->
+
+    <style name="DetailViewTheme">
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="DetailViewTitleBarTheme">
+        <item name="android:background">@color/colorPrimaryLight</item>
+    </style>
+
+    <style name="DetailViewTitleTextTheme">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/font_size20</item>
+    </style>
+
+    <style name="DetailViewTextTheme">
+        <item name="android:textColor">@color/blueGrey</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DetailViewYearTextTheme" parent="DetailViewTextTheme">
+        <item name="android:textSize">@dimen/font_size30</item>
+    </style>
+
+    <style name="DetailViewVotesTextTheme" parent="DetailViewTextTheme">
+        <item name="android:textSize">@dimen/font_size15</item>
+    </style>
+
+    <style name="DetailViewOverviewTextTheme" parent="DetailViewTextTheme">
+        <item name="android:textSize">@dimen/font_size15</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
 </resources>
     <!--.___ Created by Jose Gonzalez, 02/11/2015 __.-->

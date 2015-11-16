@@ -1,10 +1,6 @@
 package com.example.jose_gonzalez.popularmovies;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +10,8 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
+
+import java.text.DecimalFormat;
 
 /**.___
  * Created by jose-gonzalez on 09/11/15.
@@ -26,27 +24,31 @@ public class MovieDetailFragment extends Fragment {
 
     @ViewById(resName = "title")
     protected TextView mTitle;
+    @ViewById(resName = "year")
+    protected TextView mYear;
+    @ViewById(resName = "votes")
+    protected TextView mVotes;
+    @ViewById(resName = "overview")
+    protected TextView mOverview;
     @ViewById(resName = "movie_image")
     protected ImageView mMovieImage;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.movie_detail_fragment, container, false);
-    }
 
     @AfterViews
     public void init(){
         mTitle.setText(mMoviePosterDto.getTitle());
+        mYear.setText(mMoviePosterDto.getYear());
+        //.___ Format to show only 2 decimals __./
+        mVotes.setText(String.format(getResources().getString(
+                R.string.vote_average),
+                "" + new DecimalFormat("##.##").format(mMoviePosterDto.getVoteAverage())));
+        mOverview.setText(mMoviePosterDto.getOverview());
 
         //.___ Glide image load __./
         Glide.with(getContext())
-                .load(mMoviePosterDto.posterUrl)
+                .load(MoviesListActivity.BASE_URL
+                        + MoviesListActivity.DEVICE_SIZE3
+                        + mMoviePosterDto.posterUrl)
                 .into(mMovieImage);
-    }
-
-    public void setMoviePosterDto(MoviePosterDto moviePosterDto){
-        mMoviePosterDto = moviePosterDto;
     }
 
 }

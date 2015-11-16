@@ -4,6 +4,8 @@
     <string name="sort_by_popularity">Sort by popularity</string>
     <string name="sort_by_votes">Sort by votes</string>
     <string name="sort_by_release">Sort by release date</string>
+    <string name="poster_image">Poster image</string>
+    <string name="vote_average">%s votes</string>
 
 </resources>
     <!--.___ Created by Jose Gonzalez, 02/11/2015 __.-->

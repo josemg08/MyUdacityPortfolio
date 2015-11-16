@@ -61,4 +61,12 @@ public class MoviePosterDto implements Serializable { //.___ stands for Data tra
         return adult;
     }
 
+    public String getYear(){
+        String year = "";
+        for(int i = 0; i < 4; i++){
+            year += getReleaseDate().charAt(i);
+        }
+        return year;
+    }
+
 }

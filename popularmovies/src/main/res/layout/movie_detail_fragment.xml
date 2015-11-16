@@ -1,41 +1,88 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/item_detail"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
-
-    <!--.___ Title __.-->
+    android:clickable="true"
+    android:fillViewport="true">
 
     <RelativeLayout
-        android:id="@+id/title_content"
+        android:id="@+id/item_detail"
+        style="@style/DetailViewTheme"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/distance_20dp"
-        android:background="@color/colorPrimaryLight">
-        <TextView
+        android:layout_height="wrap_content">
+
+        <!--.___ Title __.-->
+
+        <RelativeLayout
+            android:id="@+id/title_content"
+            style="@style/DetailViewTitleBarTheme"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_70dp">
+
+            <TextView
+                android:id="@+id/title"
+                style="@style/DetailViewTitleTextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/distance_20dp"
+                android:layout_marginStart="@dimen/distance_20dp" />
+        </RelativeLayout>
+
+        <!--.___ Content __.-->
+
+        <RelativeLayout
+            android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/title"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="@dimen/distance_10dp"
-            android:layout_marginStart="@dimen/distance_10dp"/>
+            android:layout_below="@+id/title_content"
+            android:padding="@dimen/distance_15dp">
+
+            <ImageView
+                android:id="@+id/movie_image"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/movie_poster_size"
+                android:contentDescription="@string/poster_image"
+                android:src="@android:drawable/sym_def_app_icon" />
+
+            <!--.___ Year, votes __.-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/distance_20dp"
+                android:layout_marginStart="@dimen/distance_20dp"
+                android:layout_toEndOf="@id/movie_image"
+                android:layout_toRightOf="@id/movie_image"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/year"
+                    style="@style/DetailViewYearTextTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/votes"
+                    style="@style/DetailViewVotesTextTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!--.___ overview __.-->
+
+        <TextView
+            android:id="@+id/overview"
+            style="@style/DetailViewOverviewTextTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/main_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/distance_10dp"
+            android:padding="@dimen/distance_15dp"/>
+
     </RelativeLayout>
 
-    <!--.___ Content __.-->
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/title_content">
-        <ImageView
-            android:id="@+id/movie_image"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/size_270dp"
-            android:src="@android:drawable/sym_def_app_icon"/>
-    </RelativeLayout>
-
-</RelativeLayout>
-<!--.___ Created by Jose Gonzalez - 10/11/2015 __.-->
+</ScrollView><!--.___ Created by Jose Gonzalez - 10/11/2015 __.-->
 

@@ -35,11 +35,10 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
     private List<MoviePosterDto> movieList;
 
     //.___ Available sizes: w92/, w154/, w185/, w342/, w500/, w780/ __./
-    private static final String DEVICE_SIZE3 = "w342/";
-    private static final String BASE_URL = "http://image.tmdb.org/t/p/";
-
+    public static final String DEVICE_SIZE3 = "w342/";
+    public static final String BASE_URL = "http://image.tmdb.org/t/p/";
     //.___ KEY that grants permission to interact whit API __./
-    public static final String KEY = "Add your key!";
+    public static final String KEY = "Add your key here!";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,9 +84,8 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
     //.___ Callback from RecycleView, To respond to item selection __./
     @Override
     public void itemSelected(int elementPosition) {
-        //MovieDetailFragment fragment = MovieDetailFragment_.builder().mMoviePosterDto(movieList.get(elementPosition)); //TODO send DTO as fragmentarg
-        MovieDetailFragment fragment = MovieDetailFragment_.builder().build();
-        fragment.setMoviePosterDto(movieList.get(elementPosition));
+        MovieDetailFragment fragment = MovieDetailFragment_.builder()
+                .mMoviePosterDto(movieList.get(elementPosition)).build();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.portfolio_fragment, fragment)
                 .addToBackStack("tag")

@@ -10,11 +10,16 @@
 
     <dimen name="size_5dp">5dp</dimen>
     <dimen name="size_10dp">10dp</dimen>
+    <dimen name="size_70dp">70dp</dimen>
     <dimen name="size_270dp">270dp</dimen>
 
     <!--.___ sizes __.-->
 
     <dimen name="font_size12">12sp</dimen>
+    <dimen name="font_size15">15sp</dimen>
+    <dimen name="font_size18">18sp</dimen>
+    <dimen name="font_size20">20sp</dimen>
+    <dimen name="font_size30">30sp</dimen>
 
 </resources>
     <!--.___ Created by Jose Gonzalez, 03/11/2015 __.-->
