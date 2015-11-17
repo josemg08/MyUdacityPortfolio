@@ -1,5 +1,6 @@
 package com.example.jose_gonzalez.popularmovies;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -35,10 +36,10 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
     private List<MoviePosterDto> movieList;
 
     //.___ Available sizes: w92/, w154/, w185/, w342/, w500/, w780/ __./
-    public static final String DEVICE_SIZE3 = "w342/";
+    public static final String DEVICE_SIZE = "w342/";
     public static final String BASE_URL = "http://image.tmdb.org/t/p/";
     //.___ KEY that grants permission to interact whit API __./
-    public static final String KEY = "Add your key here!";
+    public static final String KEY = "48b95a671f15deb4851700a9a10b42c8";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,12 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
         setSupportActionBar(mToolbar);
 
         //.___ Setting the layoutManager __./
-        mRecicleView.setLayoutManager(new GridLayoutManager(this, 2));
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            mRecicleView.setLayoutManager(new GridLayoutManager(this, 2));
+        }
+        else{
+            mRecicleView.setLayoutManager(new GridLayoutManager(this, 3));
+        }
 
         dataItems = new ArrayList<>();
         movieImageAdapter = new MovieImageAdapter(getApplicationContext(), dataItems, this);
@@ -73,7 +79,7 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
         dataItems.clear();
         movieList = movieDto.getMovies();
         for (MoviePosterDto moviePosterDto : movieList) {
-            dataItems.add(BASE_URL + DEVICE_SIZE3 + moviePosterDto.getPosterUrl());
+            dataItems.add(BASE_URL + DEVICE_SIZE + moviePosterDto.getPosterUrl());
         }
 
         movieImageAdapter = new MovieImageAdapter(getApplicationContext(), dataItems, this);

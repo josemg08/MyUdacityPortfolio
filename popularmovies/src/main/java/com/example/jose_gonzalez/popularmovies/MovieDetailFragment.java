@@ -46,7 +46,7 @@ public class MovieDetailFragment extends Fragment {
         //.___ Glide image load __./
         Glide.with(getContext())
                 .load(MoviesListActivity.BASE_URL
-                        + MoviesListActivity.DEVICE_SIZE3
+                        + MoviesListActivity.DEVICE_SIZE
                         + mMoviePosterDto.posterUrl)
                 .into(mMovieImage);
     }
