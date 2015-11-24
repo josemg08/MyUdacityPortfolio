@@ -1,6 +1,7 @@
 package com.example.jose_gonzalez.popularmovies;
 
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -32,21 +33,37 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
     protected RecyclerView mRecicleView;
 
     private List<String> dataItems;
+    private ArrayList<Bitmap> dataItemsBitmap;
     private MovieImageAdapter movieImageAdapter;
     private List<MoviePosterDto> movieList;
+    private boolean resurrected = false;
 
     //.___ Available sizes: w92/, w154/, w185/, w342/, w500/, w780/ __./
     public static final String DEVICE_SIZE = "w342/";
     public static final String BASE_URL = "http://image.tmdb.org/t/p/";
     //.___ KEY that grants permission to interact whit API __./
     public static final String KEY = "48b95a671f15deb4851700a9a10b42c8";
+    public static final String BITMAP_MOVIE_LIST = "bitmap_movie_list";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //.___ Async task bring info from API __./
-        mDataSource.getPopularMovies(this);
+        if(savedInstanceState == null || !savedInstanceState.containsKey(BITMAP_MOVIE_LIST)) {
+            //.___ Async task bring info from API __./
+            mDataSource.getPopularMovies(this);
+            dataItems = new ArrayList<>();
+            resurrected = false;
+        }
+        else{
+            dataItemsBitmap = savedInstanceState.getParcelableArrayList(BITMAP_MOVIE_LIST);
+            resurrected = true;
+        }
+    }
+
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList(BITMAP_MOVIE_LIST, movieImageAdapter.getBitmapList());
+        super.onSaveInstanceState(outState);
     }
 
     @AfterViews
@@ -62,7 +79,12 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
             mRecicleView.setLayoutManager(new GridLayoutManager(this, 3));
         }
 
-        dataItems = new ArrayList<>();
+        if(!resurrected){
+            movieImageAdapter = new MovieImageAdapter(getApplicationContext(), dataItems, this);
+        }
+        else{
+            movieImageAdapter = new MovieImageAdapter(getApplicationContext(), dataItemsBitmap, this);
+        }
         movieImageAdapter = new MovieImageAdapter(getApplicationContext(), dataItems, this);
         mRecicleView.setAdapter(movieImageAdapter);
     }
