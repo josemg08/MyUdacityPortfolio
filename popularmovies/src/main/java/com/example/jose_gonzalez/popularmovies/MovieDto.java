@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import org.parceler.Parcel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,9 +15,9 @@ import java.util.List;
 public class MovieDto implements Serializable {
 
     @SerializedName("results")
-    protected List<MoviePosterDto> movies;
+    protected ArrayList<MoviePosterDto> movies;
 
-    public List<MoviePosterDto> getMovies() {
+    public ArrayList<MoviePosterDto> getMovies() {
         return movies;
     }
 

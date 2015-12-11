@@ -1,6 +1,9 @@
 package com.example.jose_gonzalez.popularmovies;
 
+import android.content.Context;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -15,7 +19,6 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**.___
  * Created by jose-gonzalez on 02/11/15.
@@ -33,7 +36,7 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
 
     private ArrayList<String> dataItems;
     private MovieImageAdapter movieImageAdapter;
-    private List<MoviePosterDto> movieList;
+    private ArrayList<MoviePosterDto> movieList;
 
     //.___ Available sizes: w92/, w154/, w185/, w342/, w500/, w780/ __./
     public static final String DEVICE_SIZE = "w342/";
@@ -41,6 +44,7 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
     //.___ KEY that grants permission to interact whit API __./
     public static final String KEY = "48b95a671f15deb4851700a9a10b42c8";
     public static final String URL_LIST = "url_list";
+    public static final String MOVIE_DTO_LIST = "movie_dto_list";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,11 +58,13 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
         else{
             //.___ Uses cached urls to display corresponding cached images by Glide __./
             dataItems = savedInstanceState.getStringArrayList(URL_LIST);
+            movieList = savedInstanceState.getParcelableArrayList(MOVIE_DTO_LIST);
         }
     }
 
     public void onSaveInstanceState(Bundle outState) {
         outState.putStringArrayList(URL_LIST, movieImageAdapter.getUrlList());
+        outState.putParcelableArrayList(MOVIE_DTO_LIST, movieList);
         super.onSaveInstanceState(outState);
     }
 
@@ -102,12 +108,18 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
     //.___ Callback from RecycleView, To respond to item selection __./
     @Override
     public void itemSelected(int elementPosition) {
-        MovieDetailFragment fragment = MovieDetailFragment_.builder()
-                .mMoviePosterDto(movieList.get(elementPosition)).build();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.portfolio_fragment, fragment)
-                .addToBackStack("tag")
-                .commit();
+        if(isNetworkAvailable()) {
+            MovieDetailFragment fragment = MovieDetailFragment_.builder()
+                    .mMoviePosterDto(movieList.get(elementPosition)).build();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.portfolio_fragment, fragment)
+                    .addToBackStack("tag")
+                    .commit();
+        }
+        else{
+            Toast.makeText(this, getResources().getString(R.string.no_internet_connection),
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     //.___ Action bar menu __./
@@ -135,6 +147,13 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

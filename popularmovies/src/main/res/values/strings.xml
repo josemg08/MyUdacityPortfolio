@@ -6,6 +6,7 @@
     <string name="sort_by_release">Sort by release date</string>
     <string name="poster_image">Poster image</string>
     <string name="vote_average">%s votes</string>
+    <string name="no_internet_connection">Error, must be connected to internet</string>
 
 </resources>
     <!--.___ Created by Jose Gonzalez, 02/11/2015 __.-->
