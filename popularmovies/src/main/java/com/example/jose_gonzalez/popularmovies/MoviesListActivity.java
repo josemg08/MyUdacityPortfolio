@@ -1,7 +1,6 @@
 package com.example.jose_gonzalez.popularmovies;
 
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -22,7 +21,7 @@ import java.util.List;
  * Created by jose-gonzalez on 02/11/15.
  __.*/
 @EActivity(resName = "movies_list_activity")
-public class MoviesListActivity extends AppCompatActivity implements PopularMoviesDataSource.AsyncHost, MovieImageAdapter.RecicleCallback{
+public class MoviesListActivity extends AppCompatActivity implements PopularMoviesDataSource.AsyncHost, MovieImageAdapter.RecycleCallback {
 
     @Bean
     protected PopularMoviesDataSource mDataSource;
@@ -32,37 +31,34 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
     @ViewById(resName = "recyclerView")
     protected RecyclerView mRecicleView;
 
-    private List<String> dataItems;
-    private ArrayList<Bitmap> dataItemsBitmap;
+    private ArrayList<String> dataItems;
     private MovieImageAdapter movieImageAdapter;
     private List<MoviePosterDto> movieList;
-    private boolean resurrected = false;
 
     //.___ Available sizes: w92/, w154/, w185/, w342/, w500/, w780/ __./
     public static final String DEVICE_SIZE = "w342/";
     public static final String BASE_URL = "http://image.tmdb.org/t/p/";
     //.___ KEY that grants permission to interact whit API __./
     public static final String KEY = "48b95a671f15deb4851700a9a10b42c8";
-    public static final String BITMAP_MOVIE_LIST = "bitmap_movie_list";
+    public static final String URL_LIST = "url_list";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState == null || !savedInstanceState.containsKey(BITMAP_MOVIE_LIST)) {
+        if(savedInstanceState == null || !savedInstanceState.containsKey(URL_LIST)) {
             //.___ Async task bring info from API __./
             mDataSource.getPopularMovies(this);
             dataItems = new ArrayList<>();
-            resurrected = false;
         }
         else{
-            dataItemsBitmap = savedInstanceState.getParcelableArrayList(BITMAP_MOVIE_LIST);
-            resurrected = true;
+            //.___ Uses cached urls to display corresponding cached images by Glide __./
+            dataItems = savedInstanceState.getStringArrayList(URL_LIST);
         }
     }
 
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList(BITMAP_MOVIE_LIST, movieImageAdapter.getBitmapList());
+        outState.putStringArrayList(URL_LIST, movieImageAdapter.getUrlList());
         super.onSaveInstanceState(outState);
     }
 
@@ -79,12 +75,6 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
             mRecicleView.setLayoutManager(new GridLayoutManager(this, 3));
         }
 
-        if(!resurrected){
-            movieImageAdapter = new MovieImageAdapter(getApplicationContext(), dataItems, this);
-        }
-        else{
-            movieImageAdapter = new MovieImageAdapter(getApplicationContext(), dataItemsBitmap, this);
-        }
         movieImageAdapter = new MovieImageAdapter(getApplicationContext(), dataItems, this);
         mRecicleView.setAdapter(movieImageAdapter);
     }

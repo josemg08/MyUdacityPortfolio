@@ -1,8 +1,6 @@
 package com.example.jose_gonzalez.popularmovies;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**.___
  *
@@ -23,31 +21,19 @@ import java.util.List;
  __.*/
 public class MovieImageAdapter extends RecyclerView.Adapter{
 
-    private List<String> urls;
-    private ArrayList<Bitmap> images;
-    private RecicleCallback callback;
+    private ArrayList<String> urls;
+    private RecycleCallback callback;
     private Context context;
 
     //.___ To get images from API __./
-    public MovieImageAdapter(Context context, List<String> urls, RecicleCallback callback) {
+    public MovieImageAdapter(Context context, ArrayList<String> urls, RecycleCallback callback) {
         this.urls = urls;
         this.callback = callback;
         this.context = context;
-        images = new ArrayList<>();
     }
 
-    //.___ To use saved instance images __./
-    public MovieImageAdapter(Context context, ArrayList<Bitmap> images, RecicleCallback callback) {
-        urls = null;
-        this.callback = callback;
-        this.context = context;
-        this.images = images;
-    }
-
-    public interface RecicleCallback{
-
+    public interface RecycleCallback {
         void itemSelected(int elementPosition);
-
     }
 
     @Override
@@ -60,35 +46,22 @@ public class MovieImageAdapter extends RecyclerView.Adapter{
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        //String dataItem = urls.get(position);
-        // Casting the viewHolder to MyViewHolder so I could interact with the views
         MyViewHolder myViewHolder = (MyViewHolder) viewHolder;
 
-        if(urls != null) {
-            //.___ Glide image load __./
-            Glide.with(context)
-                    .load(urls.get(position))
-                    .into(myViewHolder.imageView);
-            myViewHolder.imageView.buildDrawingCache();
-            images.add(myViewHolder.imageView.getDrawingCache());
-        }
-        else{
-            myViewHolder.imageView.setImageBitmap(images.get(position));
-        }
+        //.___ Glide image load and cache __./
+        Glide.with(context)
+                .load(urls.get(position))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(myViewHolder.imageView);
     }
 
     @Override
     public int getItemCount() {
-        if(urls != null) {
-            return urls.size();
-        }
-        else{
-            return images.size();
-        }
+        return urls.size();
     }
 
-    public ArrayList<Bitmap> getBitmapList(){
-        return images;
+    public ArrayList<String> getUrlList(){
+        return urls;
     }
 
     /**.___
