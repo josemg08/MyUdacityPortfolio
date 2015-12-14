@@ -13,6 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.jose_gonzalez.popularmovies.data.PopularMoviesDataSource;
+import com.example.jose_gonzalez.popularmovies.dto.MovieDto;
+import com.example.jose_gonzalez.popularmovies.dto.MoviePosterDto;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;

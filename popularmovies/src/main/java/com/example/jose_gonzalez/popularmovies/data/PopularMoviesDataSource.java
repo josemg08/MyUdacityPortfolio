@@ -1,6 +1,8 @@
-package com.example.jose_gonzalez.popularmovies;
+package com.example.jose_gonzalez.popularmovies.data;
 
 import android.os.AsyncTask;
+
+import com.example.jose_gonzalez.popularmovies.dto.MovieDto;
 
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.rest.RestService;

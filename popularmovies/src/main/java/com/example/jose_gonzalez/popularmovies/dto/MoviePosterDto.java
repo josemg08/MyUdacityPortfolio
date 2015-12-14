@@ -1,4 +1,4 @@
-package com.example.jose_gonzalez.popularmovies;
+package com.example.jose_gonzalez.popularmovies.dto;
 
 import android.os.Parcelable;
 

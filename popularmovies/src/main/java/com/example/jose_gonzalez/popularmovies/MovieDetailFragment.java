@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.jose_gonzalez.popularmovies.dto.MoviePosterDto;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -47,7 +48,7 @@ public class MovieDetailFragment extends Fragment {
         Glide.with(getContext())
                 .load(MoviesListActivity.BASE_URL
                         + MoviesListActivity.DEVICE_SIZE
-                        + mMoviePosterDto.posterUrl)
+                        + mMoviePosterDto.getPosterUrl())
                 .into(mMovieImage);
     }
 

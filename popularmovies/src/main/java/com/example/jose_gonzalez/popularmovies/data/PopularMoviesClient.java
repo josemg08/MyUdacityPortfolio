@@ -1,4 +1,7 @@
-package com.example.jose_gonzalez.popularmovies;
+package com.example.jose_gonzalez.popularmovies.data;
+
+import com.example.jose_gonzalez.popularmovies.MoviesListActivity;
+import com.example.jose_gonzalez.popularmovies.dto.MovieDto;
 
 import org.androidannotations.annotations.rest.Get;
 import org.androidannotations.annotations.rest.Rest;
