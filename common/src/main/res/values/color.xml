@@ -21,6 +21,8 @@
     <color name="orangeDeep">#FF5722</color>
     <color name="brown">#795548</color>
     <color name="blueGrey">#607D8B</color>
+    <color name="blueGreyDark">#37474F</color>
+    <color name="blueGreyDarker">#263238</color>
 
     //.___ Grey scale __./
 
