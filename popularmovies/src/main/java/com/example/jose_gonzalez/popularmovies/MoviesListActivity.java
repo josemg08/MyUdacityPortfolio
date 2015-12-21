@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.jose_gonzalez.popularmovies.data.DBHelper;
 import com.example.jose_gonzalez.popularmovies.data.PopularMoviesDataSource;
 import com.example.jose_gonzalez.popularmovies.dto.MovieDto;
 import com.example.jose_gonzalez.popularmovies.dto.MoviePosterDto;
@@ -64,6 +65,8 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
             dataItems = savedInstanceState.getStringArrayList(URL_LIST);
             movieList = savedInstanceState.getParcelableArrayList(MOVIE_DTO_LIST);
         }
+
+        DBHelper db = DBHelper.getHelper(this);
     }
 
     public void onSaveInstanceState(Bundle outState) {
