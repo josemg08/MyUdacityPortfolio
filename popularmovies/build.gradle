@@ -64,3 +64,6 @@ apt {
         resourcePackageName 'com.example.jose_gonzalez.popularmovies'
     }
 }
+dependencies {
+    androidTestCompile 'junit:junit:4.12'
+}

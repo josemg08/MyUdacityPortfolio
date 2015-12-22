@@ -43,6 +43,9 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
     private MovieImageAdapter movieImageAdapter;
     private ArrayList<MoviePosterDto> movieList;
 
+    //.___ DataBase __./
+    DBHelper db;
+
     //.___ Available sizes: w92/, w154/, w185/, w342/, w500/, w780/ __./
     public static final String DEVICE_SIZE = "w342/";
     public static final String BASE_URL = "http://image.tmdb.org/t/p/";
@@ -66,7 +69,7 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
             movieList = savedInstanceState.getParcelableArrayList(MOVIE_DTO_LIST);
         }
 
-        DBHelper db = DBHelper.getHelper(this);
+        db = DBHelper.getHelper(this);
     }
 
     public void onSaveInstanceState(Bundle outState) {

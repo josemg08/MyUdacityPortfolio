@@ -24,26 +24,30 @@ public class DBHelper extends SQLiteOpenHelper {
         return instance;
     }
 
-    //.___ Logcat tag __./
-    private static final String LOG = "DatabaseHelper";
+    private static final String COMMA_SEP = ",";
+    private static final String TEXT_TYPE = " TEXT";
 
     //.___ Database Version __./
     private static final int DATABASE_VERSION = 1;
-
+    //.___ Logcat tag __./
+    private static final String LOG = "DatabaseHelper";
     //.___ Database Name __./
     private static final String DATABASE_NAME = "popMoviesBasic";
 
     //.___ Table Names __./
     private static final String TABLE_FAVORITES = "favorites";
-
     //.___ Column names __./
-    private static final String FAVORITES_ID = "badge_id";
-    private static final String FAVORITES_NAME = "badge_name";
+    private static final String FAVORITE_ID = "favorite_id";
+    private static final String FAVORITE_URL = "favorite_url";
+    private static final String FAVORITE_NAME = "favorite_name";
 
-    // Table Create Statements TODO is this necessary?
-    // Badge table create statement
-    private static final String CREATE_TABLE_BADGE = "CREATE TABLE "
-            + TABLE_FAVORITES + "(" + FAVORITES_ID + " INTEGER PRIMARY KEY," + FAVORITES_NAME + ")";
+    //.___ Favorite table create statement __./
+    private static final String CREATE_TABLE_FAVORITES = "CREATE TABLE "
+            + TABLE_FAVORITES + "("
+            + FAVORITE_ID + " INTEGER PRIMARY KEY,"
+            + FAVORITE_URL + TEXT_TYPE + COMMA_SEP
+            + FAVORITE_NAME + TEXT_TYPE
+            + ")";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -52,7 +56,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         //.___ creating required tables __./
-        db.execSQL(CREATE_TABLE_BADGE);
+        db.execSQL(CREATE_TABLE_FAVORITES);
     }
 
     @Override
@@ -71,8 +75,9 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(FAVORITES_ID, favoriteModel.getId());
-        values.put(FAVORITES_NAME, favoriteModel.getName());
+        values.put(FAVORITE_ID, favoriteModel.getId());
+        values.put(FAVORITE_URL, favoriteModel.getUrl());
+        values.put(FAVORITE_NAME, favoriteModel.getName());
 
         //.___ insert row __./
         return db.insert(TABLE_FAVORITES, null, values);
@@ -82,21 +87,44 @@ public class DBHelper extends SQLiteOpenHelper {
      * get single favorite by id
      * remember to close DB after using
     __.*/
-    public FavoriteModel getBadge(long favorite_id) {
+    public FavoriteModel getFavoriteById(long favorite_id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String selectQuery = "SELECT  * FROM " + TABLE_FAVORITES + " WHERE "
-                + FAVORITES_ID + " = " + favorite_id;
+                + FAVORITE_ID + " = " + favorite_id;
 
         Log.e(LOG, selectQuery);
 
-        Cursor c = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.rawQuery(selectQuery, null);
 
-        if (c != null)
-            c.moveToFirst();
+        if (cursor != null)
+            cursor.moveToFirst();
 
-        return new FavoriteModel(c.getLong(c.getColumnIndex(FAVORITES_ID)),
-                c.getString(c.getColumnIndex(FAVORITES_NAME)));
+        return new FavoriteModel(cursor.getLong(cursor.getColumnIndex(FAVORITE_ID)),
+                cursor.getString(cursor.getColumnIndex(FAVORITE_URL)),
+                cursor.getString(cursor.getColumnIndex(FAVORITE_NAME)));
+    }
+
+    /**.___
+     * get single favorite by url
+     * remember to close DB after using
+     __.*/
+    public FavoriteModel getFavoriteByUrl(long favorite_url) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_FAVORITES + " WHERE "
+                + FAVORITE_URL + " = " + favorite_url;
+
+        Log.e(LOG, selectQuery);
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        return new FavoriteModel(cursor.getLong(cursor.getColumnIndex(FAVORITE_ID)),
+                cursor.getString(cursor.getColumnIndex(FAVORITE_URL)),
+                cursor.getString(cursor.getColumnIndex(FAVORITE_NAME)));
     }
 
     //.___ closing database __./
