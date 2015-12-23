@@ -1,4 +1,4 @@
-package com.example.jose_gonzalez.popularmovies;
+package com.example.jose_gonzalez.popularmovies.ui;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -13,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.jose_gonzalez.popularmovies.MovieDetailFragment_;
+import com.example.jose_gonzalez.popularmovies.R;
 import com.example.jose_gonzalez.popularmovies.data.DBHelper;
 import com.example.jose_gonzalez.popularmovies.data.PopularMoviesDataSource;
 import com.example.jose_gonzalez.popularmovies.dto.MovieDto;

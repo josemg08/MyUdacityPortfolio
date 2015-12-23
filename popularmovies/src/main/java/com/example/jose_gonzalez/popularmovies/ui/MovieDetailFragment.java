@@ -1,10 +1,11 @@
-package com.example.jose_gonzalez.popularmovies;
+package com.example.jose_gonzalez.popularmovies.ui;
 
 import android.support.v4.app.Fragment;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.jose_gonzalez.popularmovies.R;
 import com.example.jose_gonzalez.popularmovies.dto.MoviePosterDto;
 
 import org.androidannotations.annotations.AfterViews;

@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/portfolio_fragment"
-        android:name="com.example.jose_gonzalez.popularmovies.MoviesListFragment"
+        android:name="com.example.jose_gonzalez.popularmovies.ui.MoviesListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
