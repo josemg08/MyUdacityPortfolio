@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.jose_gonzalez.popularmovies.MovieDetailFragment_;
 import com.example.jose_gonzalez.popularmovies.R;
 import com.example.jose_gonzalez.popularmovies.data.DBHelper;
 import com.example.jose_gonzalez.popularmovies.data.PopularMoviesDataSource;

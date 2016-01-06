@@ -67,6 +67,15 @@
                     style="@style/DetailViewVotesTextTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+
+                <ImageButton
+                    android:id="@+id/favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/distance_10dp"
+                    android:src="@android:drawable/btn_star_big_off"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/favorite"/>
             </LinearLayout>
         </RelativeLayout>
 

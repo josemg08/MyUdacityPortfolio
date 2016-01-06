@@ -9,6 +9,7 @@ import com.example.jose_gonzalez.popularmovies.R;
 import com.example.jose_gonzalez.popularmovies.dto.MoviePosterDto;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
@@ -34,6 +35,10 @@ public class MovieDetailFragment extends Fragment {
     protected TextView mOverview;
     @ViewById(resName = "movie_image")
     protected ImageView mMovieImage;
+    @ViewById(resName = "favorite")
+    protected ImageView mFavorite;
+
+    private boolean isFavorite;
 
     @AfterViews
     public void init(){
@@ -51,6 +56,18 @@ public class MovieDetailFragment extends Fragment {
                         + MoviesListActivity.DEVICE_SIZE
                         + mMoviePosterDto.getPosterUrl())
                 .into(mMovieImage);
+    }
+
+    @Click(resName = "favorite")
+    void favorite() {
+        if(isFavorite){
+            mFavorite.setImageResource(android.R.drawable.btn_star_big_off);
+            isFavorite = false;
+        }
+        else{
+            mFavorite.setImageResource(android.R.drawable.btn_star_big_on);
+            isFavorite = true;
+        }
     }
 
 }

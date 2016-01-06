@@ -1,6 +1,7 @@
 <resources>
 
     <string name="app_name">PopularMovies</string>
+    <string name="favorite">Favorite</string>
     <string name="sort_by_popularity">Sort by popularity</string>
     <string name="sort_by_votes">Sort by votes</string>
     <string name="sort_by_release">Sort by release date</string>

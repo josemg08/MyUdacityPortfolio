@@ -3,6 +3,7 @@ package com.example.jose_gonzalez.popularmovies.data;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -84,10 +85,18 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**.___
+     * Delete favorite
+     __.*/
+    public void deleteFavorite(long favorite_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_FAVORITES, FAVORITE_ID + "=" + favorite_id, null);
+    }
+
+    /**.___
      * get single favorite by id
      * remember to close DB after using
     __.*/
-    public FavoriteModel getFavoriteById(long favorite_id) {
+    public FavoriteModel getFavoriteById(long favorite_id) throws CursorIndexOutOfBoundsException {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String selectQuery = "SELECT  * FROM " + TABLE_FAVORITES + " WHERE "
