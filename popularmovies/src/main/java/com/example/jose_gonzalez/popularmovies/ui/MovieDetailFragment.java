@@ -1,5 +1,6 @@
 package com.example.jose_gonzalez.popularmovies.ui;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,6 +40,11 @@ public class MovieDetailFragment extends Fragment {
     protected ImageView mFavorite;
 
     private boolean isFavorite;
+    private Callback mCallback;
+
+    public interface Callback{
+        void favoriteSelected(MoviePosterDto moviePosterDto, boolean favorite);
+    }
 
     @AfterViews
     public void init(){
@@ -58,6 +64,19 @@ public class MovieDetailFragment extends Fragment {
                 .into(mMovieImage);
     }
 
+    /**.___
+     * To init the callback
+     __.*/
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mCallback = (Callback) context;
+        } catch (ClassCastException e) {
+            //TODO catch
+        }
+    }
+
     @Click(resName = "favorite")
     void favorite() {
         if(isFavorite){
@@ -68,6 +87,8 @@ public class MovieDetailFragment extends Fragment {
             mFavorite.setImageResource(android.R.drawable.btn_star_big_on);
             isFavorite = true;
         }
+
+        mCallback.favoriteSelected(mMoviePosterDto, isFavorite);
     }
 
 }

@@ -28,6 +28,8 @@ public class MoviePosterDto implements Serializable, Parcelable{ //.___ stands f
     protected float popularity;
     @SerializedName("vote_average")
     protected float voteAverage;
+    @SerializedName("id")
+    protected long id;
     @SerializedName("adult")
     protected boolean adult;
 
@@ -84,6 +86,14 @@ public class MoviePosterDto implements Serializable, Parcelable{ //.___ stands f
 
     public boolean getAdult() {
         return adult;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getYear(){

@@ -10,6 +10,9 @@ import android.util.Log;
 
 import com.example.jose_gonzalez.popularmovies.dbmodel.FavoriteModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**.___
  * Created by jose-gonzalez on 14/12/15.
  __.*/
@@ -134,6 +137,23 @@ public class DBHelper extends SQLiteOpenHelper {
         return new FavoriteModel(cursor.getLong(cursor.getColumnIndex(FAVORITE_ID)),
                 cursor.getString(cursor.getColumnIndex(FAVORITE_URL)),
                 cursor.getString(cursor.getColumnIndex(FAVORITE_NAME)));
+    }
+
+    /**.___
+     * Returns a list of the favorite movies posters urls.
+     __.*/
+    public List<String> getFavoriteMoviesPosterUrls(){
+        List<String> list = new ArrayList<>();
+        Cursor cursor = this.getReadableDatabase().rawQuery("select * from table", null);
+
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                String url = cursor.getString(cursor.getColumnIndex(FAVORITE_URL));
+                list.add(url);
+                cursor.moveToNext();
+            }
+        }
+        return list;
     }
 
     //.___ closing database __./

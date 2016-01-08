@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.jose_gonzalez.popularmovies.R;
 import com.example.jose_gonzalez.popularmovies.data.DBHelper;
 import com.example.jose_gonzalez.popularmovies.data.PopularMoviesDataSource;
+import com.example.jose_gonzalez.popularmovies.dbmodel.FavoriteModel;
 import com.example.jose_gonzalez.popularmovies.dto.MovieDto;
 import com.example.jose_gonzalez.popularmovies.dto.MoviePosterDto;
 
@@ -30,7 +31,8 @@ import java.util.ArrayList;
  * Created by jose-gonzalez on 02/11/15.
  __.*/
 @EActivity(resName = "movies_list_activity")
-public class MoviesListActivity extends AppCompatActivity implements PopularMoviesDataSource.AsyncHost, MovieImageAdapter.RecycleCallback {
+public class MoviesListActivity extends AppCompatActivity
+        implements PopularMoviesDataSource.AsyncHost, MovieImageAdapter.RecycleCallback, MovieDetailFragment.Callback {
 
     @Bean
     protected PopularMoviesDataSource mDataSource;
@@ -99,6 +101,25 @@ public class MoviesListActivity extends AppCompatActivity implements PopularMovi
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    /**.___
+     * Callback from MovieDetailFragent
+     *
+     * @param moviePosterDto: the movie to add/delete from favorite database
+     * @param favorite: true if favorite
+     __.*/
+    @Override
+    public void favoriteSelected(MoviePosterDto moviePosterDto, boolean favorite) {
+        if(favorite){
+            db.createFavorite(new FavoriteModel(moviePosterDto.getId(),
+                    moviePosterDto.getPosterUrl(), moviePosterDto.getTitle()));
+        }
+        else{
+            if(db.getFavoriteById(moviePosterDto.getId()) != null){
+                db.deleteFavorite(moviePosterDto.getId());
+            }
+        }
     }
 
     //.___ Callback from dataSource, To be called after the asyncTask finishes __./
