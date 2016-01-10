@@ -25,6 +25,8 @@ public class MovieDetailFragment extends Fragment {
 
     @FragmentArg
     public MoviePosterDto mMoviePosterDto;
+    @FragmentArg
+    public boolean isFavorite;
 
     @ViewById(resName = "title")
     protected TextView mTitle;
@@ -39,7 +41,6 @@ public class MovieDetailFragment extends Fragment {
     @ViewById(resName = "favorite")
     protected ImageView mFavorite;
 
-    private boolean isFavorite;
     private Callback mCallback;
 
     public interface Callback{
@@ -55,6 +56,8 @@ public class MovieDetailFragment extends Fragment {
                 R.string.vote_average),
                 "" + new DecimalFormat("##.##").format(mMoviePosterDto.getVoteAverage())));
         mOverview.setText(mMoviePosterDto.getOverview());
+
+        favorite(isFavorite);
 
         //.___ Glide image load __./
         Glide.with(getContext())
@@ -89,6 +92,15 @@ public class MovieDetailFragment extends Fragment {
         }
 
         mCallback.favoriteSelected(mMoviePosterDto, isFavorite);
+    }
+
+    void favorite(boolean favorite) {
+        if(!favorite){
+            mFavorite.setImageResource(android.R.drawable.btn_star_big_off);
+        }
+        else{
+            mFavorite.setImageResource(android.R.drawable.btn_star_big_on);
+        }
     }
 
 }

@@ -2,6 +2,7 @@ package com.example.jose_gonzalez.popularmovies.ui;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.database.CursorIndexOutOfBoundsException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -26,7 +27,6 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**.___
  * Created by jose-gonzalez on 02/11/15.
@@ -48,7 +48,7 @@ public class MoviesListActivity extends AppCompatActivity
     private ArrayList<MoviePosterDto> movieList;
 
     //.___ DataBase __./
-    DBHelper db;
+    private DBHelper db;
 
     //.___ Available sizes: w92/, w154/, w185/, w342/, w500/, w780/ __./
     public static final String DEVICE_SIZE = "w342/";
@@ -156,8 +156,20 @@ public class MoviesListActivity extends AppCompatActivity
     @Override
     public void itemSelected(int elementPosition) {
         if(isNetworkAvailable()) {
+            MoviePosterDto moviePosterDto = movieList.get(elementPosition);
+            boolean fav = false;
+            try{
+                if(db.getFavoriteById(moviePosterDto.getId()) != null){
+                    fav = true;
+                }
+            }
+            catch(CursorIndexOutOfBoundsException e){
+                fav = false;
+            }
             MovieDetailFragment fragment = MovieDetailFragment_.builder()
-                    .mMoviePosterDto(movieList.get(elementPosition)).build();
+                    .mMoviePosterDto(moviePosterDto)
+                    .isFavorite(fav)
+                    .build();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.portfolio_fragment, fragment)
                     .addToBackStack("tag")
