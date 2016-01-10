@@ -26,6 +26,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**.___
  * Created by jose-gonzalez on 02/11/15.
@@ -40,7 +41,7 @@ public class MoviesListActivity extends AppCompatActivity
     @ViewById(resName = "toolbar")
     protected Toolbar mToolbar;
     @ViewById(resName = "recyclerView")
-    protected RecyclerView mRecicleView;
+    protected RecyclerView mRecycleView;
 
     private ArrayList<String> dataItems;
     private MovieImageAdapter movieImageAdapter;
@@ -88,14 +89,14 @@ public class MoviesListActivity extends AppCompatActivity
 
         //.___ Setting the layoutManager __./
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-            mRecicleView.setLayoutManager(new GridLayoutManager(this, 2));
+            mRecycleView.setLayoutManager(new GridLayoutManager(this, 2));
         }
         else{
-            mRecicleView.setLayoutManager(new GridLayoutManager(this, 3));
+            mRecycleView.setLayoutManager(new GridLayoutManager(this, 3));
         }
 
         movieImageAdapter = new MovieImageAdapter(getApplicationContext(), dataItems, this);
-        mRecicleView.setAdapter(movieImageAdapter);
+        mRecycleView.setAdapter(movieImageAdapter);
     }
 
     @Override
@@ -123,6 +124,7 @@ public class MoviesListActivity extends AppCompatActivity
     }
 
     //.___ Callback from dataSource, To be called after the asyncTask finishes __./
+
     @Override
     public void asyncUIExecute(MovieDto movieDto) {
         //.___ Populating our data set __./
@@ -133,8 +135,21 @@ public class MoviesListActivity extends AppCompatActivity
         }
 
         movieImageAdapter = new MovieImageAdapter(getApplicationContext(), dataItems, this);
-        mRecicleView.setAdapter(movieImageAdapter);
-        mRecicleView.getAdapter().notifyDataSetChanged();
+        mRecycleView.setAdapter(movieImageAdapter);
+        mRecycleView.getAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    public void asyncUIExecute(ArrayList<MoviePosterDto> moviePosterDtoList) {
+        //.___ Populating our data set __./
+        dataItems.clear();
+        for (MoviePosterDto moviePosterDto : moviePosterDtoList) {
+            dataItems.add(BASE_URL + DEVICE_SIZE + moviePosterDto.getPosterUrl());
+        }
+
+        movieImageAdapter = new MovieImageAdapter(getApplicationContext(), dataItems, this);
+        mRecycleView.setAdapter(movieImageAdapter);
+        mRecycleView.getAdapter().notifyDataSetChanged();
     }
 
     //.___ Callback from RecycleView, To respond to item selection __./
@@ -175,6 +190,9 @@ public class MoviesListActivity extends AppCompatActivity
                 return true;
             case R.id.sort_by_release_id:
                 mDataSource.getLatestReleasedMovies(this);
+                return true;
+            case R.id.sort_by_favorite:
+                mDataSource.getFavoriteMovies(this, getApplicationContext());
                 return true;
         }
 

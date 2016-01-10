@@ -140,16 +140,20 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**.___
-     * Returns a list of the favorite movies posters urls.
+     * Returns a list of the favorite movies posters ID.
      __.*/
-    public List<String> getFavoriteMoviesPosterUrls(){
+    public List<String> getFavoriteMoviesPosterIDs(){
+        SQLiteDatabase db = this.getReadableDatabase();
         List<String> list = new ArrayList<>();
-        Cursor cursor = this.getReadableDatabase().rawQuery("select * from table", null);
+
+        String selectQuery = "SELECT  * FROM " + TABLE_FAVORITES;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
-                String url = cursor.getString(cursor.getColumnIndex(FAVORITE_URL));
-                list.add(url);
+                String id = cursor.getString(cursor.getColumnIndex(FAVORITE_ID));
+                list.add(id);
                 cursor.moveToNext();
             }
         }

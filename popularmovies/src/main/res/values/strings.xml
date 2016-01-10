@@ -5,6 +5,7 @@
     <string name="sort_by_popularity">Sort by popularity</string>
     <string name="sort_by_votes">Sort by votes</string>
     <string name="sort_by_release">Sort by release date</string>
+    <string name="sort_by_favorite">Sort by favorite</string>
     <string name="poster_image">Poster image</string>
     <string name="vote_average">%s votes</string>
     <string name="no_internet_connection">Error, must be connected to internet</string>

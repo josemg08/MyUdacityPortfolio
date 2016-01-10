@@ -1,11 +1,16 @@
 package com.example.jose_gonzalez.popularmovies.data;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 import com.example.jose_gonzalez.popularmovies.dto.MovieDto;
+import com.example.jose_gonzalez.popularmovies.dto.MoviePosterDto;
 
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.rest.RestService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**.___
  * Created by jose-gonzalez on 04/11/15.
@@ -18,6 +23,8 @@ public class PopularMoviesDataSource {
     public interface AsyncHost{
 
         void asyncUIExecute(MovieDto movieDto);
+
+        void asyncUIExecute(ArrayList<MoviePosterDto> moviePosterList);
 
     }
 
@@ -71,6 +78,30 @@ public class PopularMoviesDataSource {
             protected void onPostExecute(MovieDto result) {
                 asyncHost.asyncUIExecute(result);
             }
+        }.execute();
+
+    }
+
+    public void getFavoriteMovies(final AsyncHost asyncHost, final Context context) {
+
+        //.___ Async task bring info from API __./
+        new AsyncTask<ArrayList<MoviePosterDto>, ArrayList<MoviePosterDto>, ArrayList<MoviePosterDto>>() {
+            @Override
+            protected ArrayList<MoviePosterDto> doInBackground(ArrayList<MoviePosterDto>... list) {
+                DBHelper db = DBHelper.getHelper(context);
+                ArrayList<MoviePosterDto> list1 = new ArrayList();
+                for(String movie : db.getFavoriteMoviesPosterIDs()){
+                    list1.add(mApiClient.getMovieById(movie));
+                }
+                return list1;
+            }
+
+            //.___ Update list ui after process finished __./
+            @Override
+            protected void onPostExecute(ArrayList<MoviePosterDto> result) {
+                asyncHost.asyncUIExecute(result);
+            }
+
         }.execute();
 
     }

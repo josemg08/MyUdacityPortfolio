@@ -1,5 +1,6 @@
 package com.example.jose_gonzalez.popularmovies.data;
 
+import com.example.jose_gonzalez.popularmovies.dto.MoviePosterDto;
 import com.example.jose_gonzalez.popularmovies.ui.MoviesListActivity;
 import com.example.jose_gonzalez.popularmovies.dto.MovieDto;
 
@@ -32,5 +33,9 @@ public interface PopularMoviesClient {
     //.___ Get movie list order by release date ascendant __./
     @Get("/discover/movie?sort_by=release_date.asc&api_key=" + MoviesListActivity.KEY)
     MovieDto getMoviePosterByReleaseDate();
+
+    //.___ Get movie by ID __./
+    @Get("/movie/{movie_id}?api_key=" + MoviesListActivity.KEY)
+    MoviePosterDto getMovieById(String movie_id);
 
 }

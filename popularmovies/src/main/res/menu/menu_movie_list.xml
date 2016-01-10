@@ -18,5 +18,10 @@
         android:orderInCategory="100"
         app:showAsAction="never" />
 
+    <item android:id="@+id/sort_by_favorite"
+        android:title="@string/sort_by_favorite"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
 </menu>
     <!--.___ Created by Jose Gonzalez, 02/11/2015 __.-->
