@@ -21,3 +21,4 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+//.___ End of MyUdacityPortfolio.gradle, by Jose Gonzalez 2015 __./

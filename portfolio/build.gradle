@@ -54,3 +54,4 @@ apt {
         resourcePackageName 'com.example.jose_gonzalez.udacityportfolio'
     }
 }
+//.___ End of portfolio.gradle, by Jose Gonzalez 2015 __./

@@ -104,7 +104,7 @@ public class MoviesListActivity extends AppCompatActivity
     }
 
     /**.___
-     * Callback from MovieDetailFragent
+     * Callback from MovieDetailFragment
      *
      * @param moviePosterDto: the movie to add/delete from favorite database
      * @param favorite: true if favorite
