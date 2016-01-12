@@ -38,4 +38,8 @@ public interface PopularMoviesClient {
     @Get("/movie/{movie_id}?api_key=" + MoviesListActivity.KEY)
     MoviePosterDto getMovieById(String movie_id);
 
+    //.___ Get video trailer by movie ID __./
+    //@Get("/movie/{movie_id}/videos?api_key=" + MoviesListActivity.KEY)
+    //MoviePosterDto getMovieById(String movie_id); TODO
+
 }

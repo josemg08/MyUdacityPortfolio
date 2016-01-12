@@ -20,6 +20,9 @@ public class PopularMoviesDataSource {
     @RestService
     PopularMoviesClient mApiClient;
 
+    /**.___
+     *  AsyncHost callback interface
+     __.*/
     public interface AsyncHost{
 
         void asyncUIExecute(MovieDto movieDto);
@@ -28,6 +31,9 @@ public class PopularMoviesDataSource {
 
     }
 
+    /**.___
+     * getPopularMovies list in MovieDto
+     __.*/
     public void getPopularMovies(final AsyncHost asyncHost) {
 
         //.___ Async task bring info from API __./
@@ -46,6 +52,9 @@ public class PopularMoviesDataSource {
 
     }
 
+    /**.___
+     * getMostVotedMovies list in MovieDto
+     __.*/
     public void getMostVotedMovies(final AsyncHost asyncHost) {
 
         //.___ Async task bring info from API __./
@@ -64,6 +73,9 @@ public class PopularMoviesDataSource {
 
     }
 
+    /**.___
+     * getLatestReleasedMovies list in MovieDto
+     __.*/
     public void getLatestReleasedMovies(final AsyncHost asyncHost) {
 
         //.___ Async task bring info from API __./
@@ -82,6 +94,9 @@ public class PopularMoviesDataSource {
 
     }
 
+    /**.___
+     * getFavoriteMovies in ArrayList
+     __.*/
     public void getFavoriteMovies(final AsyncHost asyncHost, final Context context) {
 
         //.___ Async task bring info from API __./
