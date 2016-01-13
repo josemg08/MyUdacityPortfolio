@@ -1,7 +1,13 @@
 package com.example.jose_gonzalez.popularmovies.ui;
 
 import android.content.Context;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +22,8 @@ import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
 
 import java.text.DecimalFormat;
+import java.util.List;
+import java.util.Vector;
 
 /**.___
  * Created by jose-gonzalez on 09/11/15.
@@ -40,6 +48,12 @@ public class MovieDetailFragment extends Fragment {
     protected ImageView mMovieImage;
     @ViewById(resName = "favorite")
     protected ImageView mFavorite;
+    @ViewById(resName = "detail_view_pager")
+    protected ViewPager mPager;
+    @ViewById(resName = "tab_layout")
+    protected TabLayout mTabLayout;
+
+    private int mTabTitles[] = new int[]{R.string.trailers, R.string.reviews};
 
     private Callback mCallback;
 
@@ -65,6 +79,8 @@ public class MovieDetailFragment extends Fragment {
                         + MoviesListActivity.DEVICE_SIZE
                         + mMoviePosterDto.getPosterUrl())
                 .into(mMovieImage);
+
+        initialisePaging();
     }
 
     /**.___
@@ -100,6 +116,50 @@ public class MovieDetailFragment extends Fragment {
         }
         else{
             mFavorite.setImageResource(android.R.drawable.btn_star_big_on);
+        }
+    }
+
+    /**.___
+     * Initialise the fragments to be paged
+     __.*/
+    private void initialisePaging(){
+        List<Fragment> fragments = new Vector<>();
+        fragments.add(Fragment.instantiate(getContext(), TrailersListFragment_.class.getName()));
+        fragments.add(Fragment.instantiate(getContext(), ReviewListFragment_.class.getName()));
+
+        PagerAdapter mPagerAdapter = new PagerAdapter(getActivity().getSupportFragmentManager(), fragments);
+        mPager.setAdapter(mPagerAdapter);
+        mTabLayout.setupWithViewPager(mPager);
+
+        for (int i = 0; i < mTabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = mTabLayout.getTabAt(i);
+            tab.setCustomView(mPagerAdapter.getTabView(i));
+        }
+    }
+
+    public class PagerAdapter extends FragmentPagerAdapter {
+
+        private List<Fragment> fragments;
+
+        public PagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+            super(fm);
+            this.fragments = fragments;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return this.fragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return this.fragments.size();
+        }
+
+        public View getTabView(int position) {
+            TextView textView = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.tab_layout, null);
+            textView.setText(mTabTitles[position]);
+            return textView;
         }
     }
 
