@@ -56,6 +56,7 @@ dependencies {
     compile 'com.google.apis:google-api-services-youtube:v3-rev120-1.19.0'
 
     //.___ Library projects __./
+    compile project(':YouTubeAndroidPlayerApi')
     compile project(':common')
 }
 
