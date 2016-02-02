@@ -12,8 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.jose_gonzalez.popularmovies.Config;
 import com.example.jose_gonzalez.popularmovies.R;
 import com.example.jose_gonzalez.popularmovies.dto.MoviePosterDto;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -124,7 +128,8 @@ public class MovieDetailFragment extends Fragment {
      __.*/
     private void initialisePaging(){
         List<Fragment> fragments = new Vector<>();
-        fragments.add(Fragment.instantiate(getContext(), TrailersListFragment_.class.getName()));
+
+        fragments.add(TrailerFragment.newInstance("3j36xYpE"));
         fragments.add(Fragment.instantiate(getContext(), ReviewListFragment_.class.getName()));
 
         PagerAdapter mPagerAdapter = new PagerAdapter(getActivity().getSupportFragmentManager(), fragments);
