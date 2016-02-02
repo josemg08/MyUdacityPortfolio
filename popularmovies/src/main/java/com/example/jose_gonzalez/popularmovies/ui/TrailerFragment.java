@@ -12,12 +12,9 @@ import com.google.android.youtube.player.YouTubePlayerSupportFragment;
  __.*/
 
 public class TrailerFragment extends YouTubePlayerSupportFragment{
-
-    private String currentVideoID = "video_id";
     private YouTubePlayer activePlayer;
 
     public static TrailerFragment newInstance(String url) {
-
         TrailerFragment playerYouTubeFrag = new TrailerFragment();
 
         Bundle bundle = new Bundle();
@@ -30,7 +27,6 @@ public class TrailerFragment extends YouTubePlayerSupportFragment{
     }
 
     private void init() {
-
         initialize(Configuration.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
 
             @Override
@@ -42,7 +38,6 @@ public class TrailerFragment extends YouTubePlayerSupportFragment{
                 activePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
                 if (!wasRestored) {
                     activePlayer.loadVideo(getArguments().getString("url"), 0);
-
                 }
             }
         });

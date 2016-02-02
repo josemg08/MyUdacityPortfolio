@@ -126,13 +126,12 @@ public class MovieDetailFragment extends Fragment {
         }
     }
 
-    /**.___
-     * Initialise the fragments to be paged
-     __.*/
+    //.___ Fragment pager __./
+
     private void initialisePaging(String urlKey){
         List<Fragment> fragments = new Vector<>();
 
-        fragments.add(TrailerFragment.newInstance("urlKey"));
+        fragments.add(TrailerFragment.newInstance(urlKey));
         fragments.add(Fragment.instantiate(getContext(), ReviewListFragment_.class.getName()));
 
         PagerAdapter mPagerAdapter =
@@ -147,7 +146,6 @@ public class MovieDetailFragment extends Fragment {
     }
 
     public class PagerAdapter extends FragmentPagerAdapter {
-
         private List<Fragment> fragments;
 
         public PagerAdapter(FragmentManager fm, List<Fragment> fragments) {
