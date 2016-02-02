@@ -20,6 +20,8 @@ import com.example.jose_gonzalez.popularmovies.data.PopularMoviesDataSource;
 import com.example.jose_gonzalez.popularmovies.dbmodel.FavoriteModel;
 import com.example.jose_gonzalez.popularmovies.dto.MovieDto;
 import com.example.jose_gonzalez.popularmovies.dto.MoviePosterDto;
+import com.example.jose_gonzalez.popularmovies.dto.TrailerDto;
+import com.example.jose_gonzalez.popularmovies.dto.TrailerListDto;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -33,7 +35,10 @@ import java.util.ArrayList;
  __.*/
 @EActivity(resName = "movies_list_activity")
 public class MoviesListActivity extends AppCompatActivity
-        implements PopularMoviesDataSource.AsyncHost, MovieImageAdapter.RecycleCallback, MovieDetailFragment.Callback {
+        implements PopularMoviesDataSource.AsyncHost,
+        PopularMoviesDataSource.TrailerAsyncHost,
+        MovieImageAdapter.RecycleCallback,
+        MovieDetailFragment.Callback{
 
     @Bean
     protected PopularMoviesDataSource mDataSource;
@@ -46,6 +51,7 @@ public class MoviesListActivity extends AppCompatActivity
     private ArrayList<String> dataItems;
     private MovieImageAdapter movieImageAdapter;
     private ArrayList<MoviePosterDto> movieList;
+    private MoviePosterDto lastMoviePosterSelected;
 
     //.___ DataBase __./
     private DBHelper db;
@@ -152,28 +158,46 @@ public class MoviesListActivity extends AppCompatActivity
         mRecycleView.getAdapter().notifyDataSetChanged();
     }
 
+    @Override
+    public void asyncUIExecute(TrailerListDto trailerListDto) {
+        if(!trailerListDto.getTrailers().isEmpty()){
+            for(TrailerDto trailer : trailerListDto.getTrailers()){
+                if(trailer.getSite().equals("YouTube")){
+                    initDetailFragment(trailer.getKey());
+                    return;
+                }
+            }
+        }
+    }
+
+    private void initDetailFragment(String trailerKey){
+        boolean fav = false;
+        try{
+            if(db.getFavoriteById(lastMoviePosterSelected.getId()) != null){
+                fav = true;
+            }
+        }
+        catch(CursorIndexOutOfBoundsException e){
+            fav = false;
+        }
+
+        MovieDetailFragment fragment = MovieDetailFragment_.builder()
+                .mMoviePosterDto(lastMoviePosterSelected)
+                .isFavorite(fav)
+                .trailerKey(trailerKey)
+                .build();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.portfolio_fragment, fragment)
+                .addToBackStack("tag")
+                .commit();
+    }
+
     //.___ Callback from RecycleView, To respond to item selection __./
     @Override
     public void itemSelected(int elementPosition) {
         if(isNetworkAvailable()) {
-            MoviePosterDto moviePosterDto = movieList.get(elementPosition);
-            boolean fav = false;
-            try{
-                if(db.getFavoriteById(moviePosterDto.getId()) != null){
-                    fav = true;
-                }
-            }
-            catch(CursorIndexOutOfBoundsException e){
-                fav = false;
-            }
-            MovieDetailFragment fragment = MovieDetailFragment_.builder()
-                    .mMoviePosterDto(moviePosterDto)
-                    .isFavorite(fav)
-                    .build();
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.portfolio_fragment, fragment)
-                    .addToBackStack("tag")
-                    .commit();
+            lastMoviePosterSelected = movieList.get(elementPosition);
+            mDataSource.getMovieTrailer(this, lastMoviePosterSelected.getId()+"");
         }
         else{
             Toast.makeText(this, getResources().getString(R.string.no_internet_connection),

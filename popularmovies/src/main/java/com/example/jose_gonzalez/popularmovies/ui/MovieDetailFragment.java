@@ -12,14 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.jose_gonzalez.popularmovies.Config;
 import com.example.jose_gonzalez.popularmovies.R;
+import com.example.jose_gonzalez.popularmovies.data.PopularMoviesDataSource;
 import com.example.jose_gonzalez.popularmovies.dto.MoviePosterDto;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
@@ -35,10 +33,15 @@ import java.util.Vector;
 @EFragment(resName = "movie_detail_fragment")
 public class MovieDetailFragment extends Fragment {
 
+    @Bean
+    protected PopularMoviesDataSource mDataSource;
+
     @FragmentArg
     public MoviePosterDto mMoviePosterDto;
     @FragmentArg
     public boolean isFavorite;
+    @FragmentArg
+    public String trailerKey;
 
     @ViewById(resName = "title")
     protected TextView mTitle;
@@ -71,7 +74,7 @@ public class MovieDetailFragment extends Fragment {
         mYear.setText(mMoviePosterDto.getYear());
         //.___ Format to show only 2 decimals __./
         mVotes.setText(String.format(getResources().getString(
-                R.string.vote_average),
+                        R.string.vote_average),
                 "" + new DecimalFormat("##.##").format(mMoviePosterDto.getVoteAverage())));
         mOverview.setText(mMoviePosterDto.getOverview());
 
@@ -84,7 +87,7 @@ public class MovieDetailFragment extends Fragment {
                         + mMoviePosterDto.getPosterUrl())
                 .into(mMovieImage);
 
-        initialisePaging();
+        initialisePaging(trailerKey);
     }
 
     /**.___
@@ -126,13 +129,14 @@ public class MovieDetailFragment extends Fragment {
     /**.___
      * Initialise the fragments to be paged
      __.*/
-    private void initialisePaging(){
+    private void initialisePaging(String urlKey){
         List<Fragment> fragments = new Vector<>();
 
-        fragments.add(TrailerFragment.newInstance("3j36xYpE"));
+        fragments.add(TrailerFragment.newInstance("urlKey"));
         fragments.add(Fragment.instantiate(getContext(), ReviewListFragment_.class.getName()));
 
-        PagerAdapter mPagerAdapter = new PagerAdapter(getActivity().getSupportFragmentManager(), fragments);
+        PagerAdapter mPagerAdapter =
+                new PagerAdapter(getChildFragmentManager(), fragments);
         mPager.setAdapter(mPagerAdapter);
         mTabLayout.setupWithViewPager(mPager);
 

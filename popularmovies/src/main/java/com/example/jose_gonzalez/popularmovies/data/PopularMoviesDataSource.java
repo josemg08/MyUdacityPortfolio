@@ -5,12 +5,12 @@ import android.os.AsyncTask;
 
 import com.example.jose_gonzalez.popularmovies.dto.MovieDto;
 import com.example.jose_gonzalez.popularmovies.dto.MoviePosterDto;
+import com.example.jose_gonzalez.popularmovies.dto.TrailerListDto;
 
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.rest.RestService;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**.___
  * Created by jose-gonzalez on 04/11/15.
@@ -21,13 +21,22 @@ public class PopularMoviesDataSource {
     PopularMoviesClient mApiClient;
 
     /**.___
-     *  AsyncHost callback interface
+     *  AsyncHost callback interface for movie list
      __.*/
     public interface AsyncHost{
 
         void asyncUIExecute(MovieDto movieDto);
 
         void asyncUIExecute(ArrayList<MoviePosterDto> moviePosterList);
+
+    }
+
+    /**.___
+     *  AsyncHost callback interface for trailer
+     __.*/
+    public interface TrailerAsyncHost{
+
+        void asyncUIExecute(TrailerListDto trailerListDto);
 
     }
 
@@ -117,6 +126,27 @@ public class PopularMoviesDataSource {
                 asyncHost.asyncUIExecute(result);
             }
 
+        }.execute();
+
+    }
+
+    /**.___
+     * Get Trailer by movie id
+     __.*/
+    public void getMovieTrailer(final TrailerAsyncHost asyncHost, final String movieID) {
+
+        //.___ Async task bring info from API __./
+        new AsyncTask<TrailerListDto, TrailerListDto, TrailerListDto>() {
+            @Override
+            protected TrailerListDto doInBackground(TrailerListDto... trailerListDtos) {
+                return mApiClient.getMovieTrailerById(movieID);
+            }
+
+            //.___ Update trailer __./
+            @Override
+            protected void onPostExecute(TrailerListDto result) {
+                asyncHost.asyncUIExecute(result);
+            }
         }.execute();
 
     }

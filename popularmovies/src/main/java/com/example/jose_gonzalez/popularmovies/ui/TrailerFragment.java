@@ -2,7 +2,7 @@ package com.example.jose_gonzalez.popularmovies.ui;
 
 import android.os.Bundle;
 
-import com.example.jose_gonzalez.popularmovies.Config;
+import com.example.jose_gonzalez.popularmovies.Configuration;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
@@ -31,7 +31,7 @@ public class TrailerFragment extends YouTubePlayerSupportFragment{
 
     private void init() {
 
-        initialize(Config.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
+        initialize(Configuration.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
 
             @Override
             public void onInitializationFailure(YouTubePlayer.Provider arg0, YouTubeInitializationResult arg1) { }
