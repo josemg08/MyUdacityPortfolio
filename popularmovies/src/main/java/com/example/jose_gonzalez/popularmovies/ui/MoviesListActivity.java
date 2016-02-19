@@ -35,7 +35,7 @@ import java.util.ArrayList;
  __.*/
 @EActivity(resName = "movies_list_activity")
 public class MoviesListActivity extends AppCompatActivity
-        implements PopularMoviesDataSource.AsyncHost,
+        implements PopularMoviesDataSource.MovieAsyncHost,
         PopularMoviesDataSource.TrailerAsyncHost,
         MovieImageAdapter.RecycleCallback,
         MovieDetailFragment.Callback{
@@ -132,7 +132,7 @@ public class MoviesListActivity extends AppCompatActivity
     //.___ Callback from dataSource, To be called after the asyncTask finishes __./
 
     @Override
-    public void asyncUIExecute(MovieDto movieDto) {
+    public void movieAsyncUIExecute(MovieDto movieDto) {
         //.___ Populating our data set __./
         dataItems.clear();
         movieList = movieDto.getMovies();
@@ -146,7 +146,7 @@ public class MoviesListActivity extends AppCompatActivity
     }
 
     @Override
-    public void asyncUIExecute(ArrayList<MoviePosterDto> moviePosterDtoList) {
+    public void movieAsyncUIExecute(ArrayList<MoviePosterDto> moviePosterDtoList) {
         //.___ Populating our data set __./
         dataItems.clear();
         for (MoviePosterDto moviePosterDto : moviePosterDtoList) {
@@ -159,7 +159,7 @@ public class MoviesListActivity extends AppCompatActivity
     }
 
     @Override
-    public void asyncUIExecute(TrailerListDto trailerListDto) {
+    public void trailerAsyncUIExecute(TrailerListDto trailerListDto) {
         if(!trailerListDto.getTrailers().isEmpty()){
             for(TrailerDto trailer : trailerListDto.getTrailers()){
                 if(trailer.getSite().equals("YouTube")){

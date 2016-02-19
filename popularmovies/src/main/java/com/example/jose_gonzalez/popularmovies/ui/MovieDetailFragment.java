@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.jose_gonzalez.popularmovies.R;
 import com.example.jose_gonzalez.popularmovies.data.PopularMoviesDataSource;
 import com.example.jose_gonzalez.popularmovies.dto.MoviePosterDto;
+import com.example.jose_gonzalez.popularmovies.dto.ReviewListDto;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -31,7 +34,7 @@ import java.util.Vector;
  * Created by jose-gonzalez on 09/11/15.
  __.*/
 @EFragment(resName = "movie_detail_fragment")
-public class MovieDetailFragment extends Fragment {
+public class MovieDetailFragment extends Fragment implements PopularMoviesDataSource.ReviewAsyncHost{
 
     @Bean
     protected PopularMoviesDataSource mDataSource;
@@ -59,10 +62,13 @@ public class MovieDetailFragment extends Fragment {
     protected ViewPager mPager;
     @ViewById(resName = "tab_layout")
     protected TabLayout mTabLayout;
+    @ViewById(resName = "reviewRecyclerView")
+    protected RecyclerView mRecycleView;
 
     private int mTabTitles[] = new int[]{R.string.trailers, R.string.reviews};
 
     private Callback mCallback;
+    private ReviewAdapter reviewAdapter;
 
     public interface Callback{
         void favoriteSelected(MoviePosterDto moviePosterDto, boolean favorite);
@@ -88,6 +94,19 @@ public class MovieDetailFragment extends Fragment {
                 .into(mMovieImage);
 
         initialisePaging(trailerKey);
+
+        //.___ Setting the layoutManager __./ TODOOOOOOOOO
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecycleView.setLayoutManager(linearLayoutManager);
+
+        reviewAdapter = new ReviewAdapter(mDataSource.getReviews(this, mMoviePosterDto.getId()+""));
+        mRecycleView.setAdapter(reviewAdapter);
+    }
+
+    @Override
+    public void reviewAsyncUIExecute(ReviewListDto reviewListDto) {
+
     }
 
     /**.___
