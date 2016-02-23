@@ -6,8 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -62,13 +60,11 @@ public class MovieDetailFragment extends Fragment implements PopularMoviesDataSo
     protected ViewPager mPager;
     @ViewById(resName = "tab_layout")
     protected TabLayout mTabLayout;
-    @ViewById(resName = "reviewRecyclerView")
-    protected RecyclerView mRecycleView;
 
     private int mTabTitles[] = new int[]{R.string.trailers, R.string.reviews};
 
     private Callback mCallback;
-    private ReviewAdapter reviewAdapter;
+    private List<Fragment> mFragmentPages;
 
     public interface Callback{
         void favoriteSelected(MoviePosterDto moviePosterDto, boolean favorite);
@@ -94,19 +90,13 @@ public class MovieDetailFragment extends Fragment implements PopularMoviesDataSo
                 .into(mMovieImage);
 
         initialisePaging(trailerKey);
-
-        //.___ Setting the layoutManager __./ TODOOOOOOOOO
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecycleView.setLayoutManager(linearLayoutManager);
-
-        reviewAdapter = new ReviewAdapter(mDataSource.getReviews(this, mMoviePosterDto.getId()+""));
-        mRecycleView.setAdapter(reviewAdapter);
+        mDataSource.getReviews(this, mMoviePosterDto.getId() + "");
     }
 
     @Override
     public void reviewAsyncUIExecute(ReviewListDto reviewListDto) {
-
+        ReviewAdapter mReviewAdapter = new ReviewAdapter(reviewListDto.getReviewDtos());
+        ((ReviewListFragment)mFragmentPages.get(1)).setReviewAdapter(mReviewAdapter);
     }
 
     /**.___
@@ -148,13 +138,12 @@ public class MovieDetailFragment extends Fragment implements PopularMoviesDataSo
     //.___ Fragment pager __./
 
     private void initialisePaging(String urlKey){
-        List<Fragment> fragments = new Vector<>();
+        mFragmentPages = new Vector<>();
 
-        fragments.add(TrailerFragment.newInstance(urlKey));
-        fragments.add(Fragment.instantiate(getContext(), ReviewListFragment_.class.getName()));
-
+        mFragmentPages.add(TrailerFragment.newInstance(urlKey));
+        mFragmentPages.add(Fragment.instantiate(getContext(), ReviewListFragment_.class.getName()));
         PagerAdapter mPagerAdapter =
-                new PagerAdapter(getChildFragmentManager(), fragments);
+                new PagerAdapter(getChildFragmentManager(), mFragmentPages);
         mPager.setAdapter(mPagerAdapter);
         mTabLayout.setupWithViewPager(mPager);
 
