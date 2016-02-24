@@ -26,8 +26,12 @@
 
         <View
             android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/white" />
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_alignRight="@+id/reviewer"
+            android:layout_alignEnd="@+id/reviewer"
+            android:layout_alignTop="@+id/review_content"
+            android:layout_alignBottom="@+id/review_content" />
 
         <TextView
             android:id="@+id/review_content"
