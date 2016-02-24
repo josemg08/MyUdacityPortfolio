@@ -15,7 +15,7 @@ public class ReviewDto implements Serializable{
     @SerializedName("author")
     protected String author;
 
-    @SerializedName("reviewContent")
+    @SerializedName("content")
     protected String reviewContent;
 
     public String getAuthor() {

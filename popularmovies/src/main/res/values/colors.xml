@@ -5,6 +5,7 @@
     <color name="colorPrimary">@color/blueGreyDark</color>
     <color name="colorPrimaryDark">@color/blueGreyDarker</color>
     <color name="colorAccent">@color/red</color>
+    <color name="colorAccentDark">#680700</color>
 
 </resources>
     <!--.___ Created by Jose Gonzalez, 02/11/2015 __.-->
