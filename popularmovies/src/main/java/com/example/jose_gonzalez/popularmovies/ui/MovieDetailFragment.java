@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.example.jose_gonzalez.popularmovies.R;
 import com.example.jose_gonzalez.popularmovies.data.PopularMoviesDataSource;
 import com.example.jose_gonzalez.popularmovies.dto.MoviePosterDto;
+import com.example.jose_gonzalez.popularmovies.dto.ReviewListDto;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -31,7 +32,7 @@ import java.util.Vector;
  * Created by jose-gonzalez on 09/11/15.
  __.*/
 @EFragment(resName = "movie_detail_fragment")
-public class MovieDetailFragment extends Fragment {
+public class MovieDetailFragment extends Fragment implements PopularMoviesDataSource.ReviewAsyncHost{
 
     @Bean
     protected PopularMoviesDataSource mDataSource;
@@ -63,6 +64,7 @@ public class MovieDetailFragment extends Fragment {
     private int mTabTitles[] = new int[]{R.string.trailers, R.string.reviews};
 
     private Callback mCallback;
+    private List<Fragment> mFragmentPages;
 
     public interface Callback{
         void favoriteSelected(MoviePosterDto moviePosterDto, boolean favorite);
@@ -87,7 +89,25 @@ public class MovieDetailFragment extends Fragment {
                         + mMoviePosterDto.getPosterUrl())
                 .into(mMovieImage);
 
-        initialisePaging(trailerKey);
+        if(!trailerKey.equals("")) {
+            initialisePaging(trailerKey);
+        }
+        mDataSource.getReviews(this, mMoviePosterDto.getId() + "");
+    }
+
+    @Override
+    public void reviewAsyncUIExecute(ReviewListDto reviewListDto) {
+        try {
+            ReviewAdapter mReviewAdapter = new ReviewAdapter(reviewListDto.getReviewDtos());
+            ((ReviewListFragment)mFragmentPages.get(1)).setReviewAdapter(mReviewAdapter);
+        }
+        catch (Exception e){
+            if(trailerKey.equals("")){
+                mPager.setVisibility(View.GONE);
+                mTabLayout.setVisibility(View.GONE);
+            }
+            e.printStackTrace();
+        }
     }
 
     /**.___
@@ -129,13 +149,12 @@ public class MovieDetailFragment extends Fragment {
     //.___ Fragment pager __./
 
     private void initialisePaging(String urlKey){
-        List<Fragment> fragments = new Vector<>();
+        mFragmentPages = new Vector<>();
 
-        fragments.add(TrailerFragment.newInstance(urlKey));
-        fragments.add(Fragment.instantiate(getContext(), ReviewListFragment_.class.getName()));
-
+        mFragmentPages.add(TrailerFragment.newInstance(urlKey));
+        mFragmentPages.add(Fragment.instantiate(getContext(), ReviewListFragment_.class.getName()));
         PagerAdapter mPagerAdapter =
-                new PagerAdapter(getChildFragmentManager(), fragments);
+                new PagerAdapter(getChildFragmentManager(), mFragmentPages);
         mPager.setAdapter(mPagerAdapter);
         mTabLayout.setupWithViewPager(mPager);
 

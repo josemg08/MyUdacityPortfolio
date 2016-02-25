@@ -35,7 +35,7 @@ import java.util.ArrayList;
  __.*/
 @EActivity(resName = "movies_list_activity")
 public class MoviesListActivity extends AppCompatActivity
-        implements PopularMoviesDataSource.AsyncHost,
+        implements PopularMoviesDataSource.MovieAsyncHost,
         PopularMoviesDataSource.TrailerAsyncHost,
         MovieImageAdapter.RecycleCallback,
         MovieDetailFragment.Callback{
@@ -132,7 +132,7 @@ public class MoviesListActivity extends AppCompatActivity
     //.___ Callback from dataSource, To be called after the asyncTask finishes __./
 
     @Override
-    public void asyncUIExecute(MovieDto movieDto) {
+    public void movieAsyncUIExecute(MovieDto movieDto) {
         //.___ Populating our data set __./
         dataItems.clear();
         movieList = movieDto.getMovies();
@@ -146,7 +146,7 @@ public class MoviesListActivity extends AppCompatActivity
     }
 
     @Override
-    public void asyncUIExecute(ArrayList<MoviePosterDto> moviePosterDtoList) {
+    public void movieAsyncUIExecute(ArrayList<MoviePosterDto> moviePosterDtoList) {
         //.___ Populating our data set __./
         dataItems.clear();
         for (MoviePosterDto moviePosterDto : moviePosterDtoList) {
@@ -156,16 +156,25 @@ public class MoviesListActivity extends AppCompatActivity
         movieImageAdapter = new MovieImageAdapter(getApplicationContext(), dataItems, this);
         mRecycleView.setAdapter(movieImageAdapter);
         mRecycleView.getAdapter().notifyDataSetChanged();
+        movieList = moviePosterDtoList;
     }
 
     @Override
-    public void asyncUIExecute(TrailerListDto trailerListDto) {
+    public void trailerAsyncUIExecute(TrailerListDto trailerListDto) {
         if(!trailerListDto.getTrailers().isEmpty()){
             for(TrailerDto trailer : trailerListDto.getTrailers()){
                 if(trailer.getSite().equals("YouTube")){
                     initDetailFragment(trailer.getKey());
                     return;
                 }
+            }
+        }
+        else{
+            try {
+                initDetailFragment("");
+            }
+            catch (Exception e){
+                e.printStackTrace();
             }
         }
     }
@@ -197,7 +206,7 @@ public class MoviesListActivity extends AppCompatActivity
     public void itemSelected(int elementPosition) {
         if(isNetworkAvailable()) {
             lastMoviePosterSelected = movieList.get(elementPosition);
-            mDataSource.getMovieTrailer(this, lastMoviePosterSelected.getId()+"");
+            mDataSource.getMovieTrailer(this, lastMoviePosterSelected.getId() + "");
         }
         else{
             Toast.makeText(this, getResources().getString(R.string.no_internet_connection),

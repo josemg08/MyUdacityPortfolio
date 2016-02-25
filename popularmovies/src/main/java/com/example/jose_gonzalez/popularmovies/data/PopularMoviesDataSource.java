@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import com.example.jose_gonzalez.popularmovies.dto.MovieDto;
 import com.example.jose_gonzalez.popularmovies.dto.MoviePosterDto;
+import com.example.jose_gonzalez.popularmovies.dto.ReviewListDto;
 import com.example.jose_gonzalez.popularmovies.dto.TrailerListDto;
 
 import org.androidannotations.annotations.EBean;
@@ -21,29 +22,39 @@ public class PopularMoviesDataSource {
     PopularMoviesClient mApiClient;
 
     /**.___
-     *  AsyncHost callback interface for movie list
+     *  MovieAsyncHost callback interface for movie list
      __.*/
-    public interface AsyncHost{
+    public interface MovieAsyncHost {
 
-        void asyncUIExecute(MovieDto movieDto);
+        void movieAsyncUIExecute(MovieDto movieDto);
 
-        void asyncUIExecute(ArrayList<MoviePosterDto> moviePosterList);
+        void movieAsyncUIExecute(ArrayList<MoviePosterDto> moviePosterList);
 
     }
 
     /**.___
-     *  AsyncHost callback interface for trailer
+     *  TrailerAsyncHost callback interface for trailers
      __.*/
     public interface TrailerAsyncHost{
 
-        void asyncUIExecute(TrailerListDto trailerListDto);
+        void trailerAsyncUIExecute(TrailerListDto trailerListDto);
 
     }
+
+    /**.___
+     *  ReviewAsyncHost callback interface for review list
+     __.*/
+    public interface ReviewAsyncHost{
+
+        void reviewAsyncUIExecute(ReviewListDto reviewListDto);
+
+    }
+
 
     /**.___
      * getPopularMovies list in MovieDto
      __.*/
-    public void getPopularMovies(final AsyncHost asyncHost) {
+    public void getPopularMovies(final MovieAsyncHost asyncHost) {
 
         //.___ Async task bring info from API __./
         new AsyncTask<MovieDto, MovieDto, MovieDto>() {
@@ -55,7 +66,7 @@ public class PopularMoviesDataSource {
             //.___ Update list ui after process finished __./
             @Override
             protected void onPostExecute(MovieDto result) {
-                asyncHost.asyncUIExecute(result);
+                asyncHost.movieAsyncUIExecute(result);
             }
         }.execute();
 
@@ -64,7 +75,7 @@ public class PopularMoviesDataSource {
     /**.___
      * getMostVotedMovies list in MovieDto
      __.*/
-    public void getMostVotedMovies(final AsyncHost asyncHost) {
+    public void getMostVotedMovies(final MovieAsyncHost asyncHost) {
 
         //.___ Async task bring info from API __./
         new AsyncTask<MovieDto, MovieDto, MovieDto>() {
@@ -76,7 +87,7 @@ public class PopularMoviesDataSource {
             //.___ Update list ui after process finished __./
             @Override
             protected void onPostExecute(MovieDto result) {
-                asyncHost.asyncUIExecute(result);
+                asyncHost.movieAsyncUIExecute(result);
             }
         }.execute();
 
@@ -85,7 +96,7 @@ public class PopularMoviesDataSource {
     /**.___
      * getLatestReleasedMovies list in MovieDto
      __.*/
-    public void getLatestReleasedMovies(final AsyncHost asyncHost) {
+    public void getLatestReleasedMovies(final MovieAsyncHost asyncHost) {
 
         //.___ Async task bring info from API __./
         new AsyncTask<MovieDto, MovieDto, MovieDto>() {
@@ -97,7 +108,7 @@ public class PopularMoviesDataSource {
             //.___ Update list ui after process finished __./
             @Override
             protected void onPostExecute(MovieDto result) {
-                asyncHost.asyncUIExecute(result);
+                asyncHost.movieAsyncUIExecute(result);
             }
         }.execute();
 
@@ -106,7 +117,8 @@ public class PopularMoviesDataSource {
     /**.___
      * getFavoriteMovies in ArrayList
      __.*/
-    public void getFavoriteMovies(final AsyncHost asyncHost, final Context context) {
+    @SuppressWarnings("all")
+    public void getFavoriteMovies(final MovieAsyncHost asyncHost, final Context context) {
 
         //.___ Async task bring info from API __./
         new AsyncTask<ArrayList<MoviePosterDto>, ArrayList<MoviePosterDto>, ArrayList<MoviePosterDto>>() {
@@ -123,7 +135,7 @@ public class PopularMoviesDataSource {
             //.___ Update list ui after process finished __./
             @Override
             protected void onPostExecute(ArrayList<MoviePosterDto> result) {
-                asyncHost.asyncUIExecute(result);
+                asyncHost.movieAsyncUIExecute(result);
             }
 
         }.execute();
@@ -145,7 +157,28 @@ public class PopularMoviesDataSource {
             //.___ Update trailer __./
             @Override
             protected void onPostExecute(TrailerListDto result) {
-                asyncHost.asyncUIExecute(result);
+                asyncHost.trailerAsyncUIExecute(result);
+            }
+        }.execute();
+
+    }
+
+    /**.___
+     * Get reviews for movie
+     __.*/
+    public void getReviews(final ReviewAsyncHost asyncHost, final String movieID) {
+
+        //.___ Async task bring info from API __./
+        new AsyncTask<ReviewListDto, ReviewListDto, ReviewListDto>() {
+            @Override
+            protected ReviewListDto doInBackground(ReviewListDto... reviewListDtos) {
+                return mApiClient.getMovieReviews(movieID);
+            }
+
+            //.___ Update list ui after process finished __./
+            @Override
+            protected void onPostExecute(ReviewListDto result) {
+                asyncHost.reviewAsyncUIExecute(result);
             }
         }.execute();
 

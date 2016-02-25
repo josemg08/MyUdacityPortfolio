@@ -1,6 +1,7 @@
 package com.example.jose_gonzalez.popularmovies.data;
 
 import com.example.jose_gonzalez.popularmovies.dto.MoviePosterDto;
+import com.example.jose_gonzalez.popularmovies.dto.ReviewListDto;
 import com.example.jose_gonzalez.popularmovies.dto.TrailerListDto;
 import com.example.jose_gonzalez.popularmovies.ui.MoviesListActivity;
 import com.example.jose_gonzalez.popularmovies.dto.MovieDto;
@@ -42,5 +43,9 @@ public interface PopularMoviesClient {
     //.___ Get video trailer by movie ID __./
     @Get("/movie/{movie_id}/videos?api_key=" + MoviesListActivity.KEY)
     TrailerListDto getMovieTrailerById(String movie_id);
+
+    //.___ Get movie reviews __./
+    @Get("/movie/{movie_id}/reviews?api_key=" + MoviesListActivity.KEY)
+    ReviewListDto getMovieReviews(String movie_id);
 
 }
