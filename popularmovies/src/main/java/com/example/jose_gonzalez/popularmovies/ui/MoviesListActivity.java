@@ -156,6 +156,7 @@ public class MoviesListActivity extends AppCompatActivity
         movieImageAdapter = new MovieImageAdapter(getApplicationContext(), dataItems, this);
         mRecycleView.setAdapter(movieImageAdapter);
         mRecycleView.getAdapter().notifyDataSetChanged();
+        movieList = moviePosterDtoList;
     }
 
     @Override
@@ -166,6 +167,14 @@ public class MoviesListActivity extends AppCompatActivity
                     initDetailFragment(trailer.getKey());
                     return;
                 }
+            }
+        }
+        else{
+            try {
+                initDetailFragment("");
+            }
+            catch (Exception e){
+                e.printStackTrace();
             }
         }
     }
@@ -197,7 +206,7 @@ public class MoviesListActivity extends AppCompatActivity
     public void itemSelected(int elementPosition) {
         if(isNetworkAvailable()) {
             lastMoviePosterSelected = movieList.get(elementPosition);
-            mDataSource.getMovieTrailer(this, lastMoviePosterSelected.getId()+"");
+            mDataSource.getMovieTrailer(this, lastMoviePosterSelected.getId() + "");
         }
         else{
             Toast.makeText(this, getResources().getString(R.string.no_internet_connection),

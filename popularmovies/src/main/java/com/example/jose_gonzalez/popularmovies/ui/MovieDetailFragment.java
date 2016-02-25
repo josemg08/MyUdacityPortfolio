@@ -89,14 +89,25 @@ public class MovieDetailFragment extends Fragment implements PopularMoviesDataSo
                         + mMoviePosterDto.getPosterUrl())
                 .into(mMovieImage);
 
-        initialisePaging(trailerKey);
+        if(!trailerKey.equals("")) {
+            initialisePaging(trailerKey);
+        }
         mDataSource.getReviews(this, mMoviePosterDto.getId() + "");
     }
 
     @Override
     public void reviewAsyncUIExecute(ReviewListDto reviewListDto) {
-        ReviewAdapter mReviewAdapter = new ReviewAdapter(reviewListDto.getReviewDtos());
-        ((ReviewListFragment)mFragmentPages.get(1)).setReviewAdapter(mReviewAdapter);
+        try {
+            ReviewAdapter mReviewAdapter = new ReviewAdapter(reviewListDto.getReviewDtos());
+            ((ReviewListFragment)mFragmentPages.get(1)).setReviewAdapter(mReviewAdapter);
+        }
+        catch (Exception e){
+            if(trailerKey.equals("")){
+                mPager.setVisibility(View.GONE);
+                mTabLayout.setVisibility(View.GONE);
+            }
+            e.printStackTrace();
+        }
     }
 
     /**.___
