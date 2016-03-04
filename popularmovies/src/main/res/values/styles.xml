@@ -22,7 +22,7 @@
     </style>
 
     <style name="DetailViewTitleBarTheme">
-        <item name="android:background">@color/colorAccentDark</item>
+        <item name="android:background">@color/colorAccent</item>
     </style>
 
     <style name="DetailViewTitleTextTheme">
@@ -32,7 +32,7 @@
     </style>
 
     <style name="DetailViewTextTheme">
-        <item name="android:textColor">@color/blueGrey</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -47,6 +47,16 @@
     <style name="DetailViewOverviewTextTheme" parent="DetailViewTextTheme">
         <item name="android:textSize">@dimen/font_size15</item>
         <item name="android:textStyle">normal</item>
+    </style>
+
+    <!--.___ Review themes __.-->
+
+    <style name="ItemReviewBackgroundTheme">
+        <item name="cardBackgroundColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="ItemReviewTextTheme">
+        <item name="android:textColor">@color/colorAccentLight</item>
     </style>
 
 </resources>

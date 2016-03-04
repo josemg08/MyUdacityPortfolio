@@ -7,7 +7,7 @@
     android:layout_margin="@dimen/distance_10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardBackgroundColor="@color/colorPrimary">
+    style="@style/ItemReviewBackgroundTheme">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,16 +22,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:padding="@dimen/distance_10dp"
-            android:textColor="@color/colorAccent"/>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:layout_alignRight="@+id/reviewer"
-            android:layout_alignEnd="@+id/reviewer"
-            android:layout_alignTop="@+id/review_content"
-            android:layout_alignBottom="@+id/review_content" />
+            style="@style/ItemReviewTextTheme"/>
 
         <TextView
             android:id="@+id/review_content"
